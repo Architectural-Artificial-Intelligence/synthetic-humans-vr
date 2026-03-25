@@ -718,6 +718,33 @@ rsa_results = dict(
     rsa_spearman_p=float(rsa_p),
     rsa_ci=rsa_ci.tolist(),
 )
+
+# ── 6b-ii. Leave-one-out RSA sensitivity ────────────────────────────────────
+# Removes each stimulus in turn and recomputes RSA on the remaining n-1 images.
+# Assesses whether the global geometry result depends on any single stimulus.
+print("\n  Leave-one-out RSA sensitivity (each stimulus removed in turn):")
+loo_rsa_vals = []
+for leave_out in range(10):
+    keep = [i for i in range(10) if i != leave_out]
+    H_loo = H_mat[keep]
+    G_loo = G_mat[keep]
+    H_rdm_loo = squareform(pdist(H_loo, metric="correlation"))
+    G_rdm_loo = squareform(pdist(G_loo, metric="correlation"))
+    n_loo = len(keep)
+    triu_loo = np.triu_indices(n_loo, k=1)
+    rho_loo, _ = stats.spearmanr(H_rdm_loo[triu_loo], G_rdm_loo[triu_loo])
+    loo_rsa_vals.append(rho_loo)
+    print(f"    Exclude image {leave_out+1:2d}: ρ = {rho_loo:.3f}")
+
+loo_min  = float(np.min(loo_rsa_vals))
+loo_max  = float(np.max(loo_rsa_vals))
+loo_mean = float(np.mean(loo_rsa_vals))
+print(f"  LOO-RSA range: [{loo_min:.3f}, {loo_max:.3f}]  mean = {loo_mean:.3f}")
+rsa_results["loo_rsa_per_image"] = loo_rsa_vals
+rsa_results["loo_rsa_min"]  = loo_min
+rsa_results["loo_rsa_max"]  = loo_max
+rsa_results["loo_rsa_mean"] = loo_mean
+
 with open(RES_DIR / "rsa_results.json", "w") as f:
     json.dump(rsa_results, f, indent=2)
 
@@ -1000,7 +1027,27 @@ fig5.savefig(FIG_DIR / "fig5_item_profiles.png", dpi=DPI, bbox_inches="tight")
 plt.close(fig5)
 print("  Saved: fig5_item_profiles.png")
 
-# ── Figure 6: Cosine similarity per image ────────────────────────────────────
+# ── Figure 6: LOO-RSA sensitivity ───────────────────────────────────────────
+fig6a, ax6a = plt.subplots(figsize=(9, 5))
+img_nums_loo = np.arange(1, 11)
+bars_loo = ax6a.bar(img_nums_loo, loo_rsa_vals,
+                     color="#3F51B5", alpha=0.8, edgecolor="white")
+ax6a.axhline(rsa_r, color="black", linestyle="-", linewidth=1.5, alpha=0.7,
+              label=f"Full RSA ρ = {rsa_r:.3f}")
+ax6a.axhline(loo_mean, color="red", linestyle="--", linewidth=1.5,
+              label=f"LOO mean ρ = {loo_mean:.3f}")
+ax6a.set_xticks(img_nums_loo)
+ax6a.set_xticklabels([f"−Im.{i}" for i in img_nums_loo], rotation=30, ha="right")
+ax6a.set_ylabel("RSA ρ (9-image subset)", fontsize=12)
+ax6a.set_ylim(0, 1.05)
+ax6a.set_title("Leave-One-Out RSA Sensitivity", fontsize=13, fontweight="bold")
+ax6a.legend(fontsize=11)
+fig6a.tight_layout()
+fig6a.savefig(FIG_DIR / "fig6a_loo_rsa.png", dpi=DPI, bbox_inches="tight")
+plt.close(fig6a)
+print("  Saved: fig6a_loo_rsa.png")
+
+# ── Figure 6b (formerly 6): Cosine similarity per image ──────────────────────
 fig6, ax6 = plt.subplots(figsize=(9, 5))
 img_nums = np.arange(1, 11)
 bars = ax6.bar(img_nums, cos_sims, color="#9C27B0", alpha=0.8, edgecolor="white")
