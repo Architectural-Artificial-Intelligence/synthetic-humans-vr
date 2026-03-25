@@ -32,8 +32,12 @@ Requirements:
 import warnings
 warnings.filterwarnings("ignore")
 
+import os
 import re
+import sys
 import json
+import subprocess
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -58,10 +62,24 @@ sns.set_theme(style="whitegrid", palette="muted", font_scale=1.15)
 # ─────────────────────────────────────────────────────────────────────────────
 ROOT      = Path(__file__).resolve().parent.parent
 DATA_DIR  = ROOT / "data"
-FIG_DIR   = ROOT / "figures"
-RES_DIR   = ROOT / "results"
-FIG_DIR.mkdir(exist_ok=True)
-RES_DIR.mkdir(exist_ok=True)
+FIG_DIR_BASE = ROOT / "figures"
+RES_DIR_BASE = ROOT / "results"
+
+BATCH_ID = os.getenv("PANAS_BATCH_ID")
+OUTPUT_TAG = os.getenv("PANAS_OUTPUT_TAG")
+
+if BATCH_ID and OUTPUT_TAG:
+    FIG_DIR = FIG_DIR_BASE / BATCH_ID / OUTPUT_TAG
+    RES_DIR = RES_DIR_BASE / BATCH_ID / OUTPUT_TAG
+elif OUTPUT_TAG:
+    FIG_DIR = FIG_DIR_BASE / OUTPUT_TAG
+    RES_DIR = RES_DIR_BASE / OUTPUT_TAG
+else:
+    FIG_DIR = FIG_DIR_BASE
+    RES_DIR = RES_DIR_BASE
+
+FIG_DIR.mkdir(parents=True, exist_ok=True)
+RES_DIR.mkdir(parents=True, exist_ok=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Constants
@@ -169,6 +187,51 @@ def permutation_test(a, b, func, n=N_BOOTSTRAP):
     return observed, p
 
 
+def discover_model_files(data_dir: Path) -> list[Path]:
+    """Return all model CSVs from data_dir (excluding human.csv)."""
+    return sorted(
+        p for p in data_dir.glob("*.csv")
+        if p.name.lower() != "human.csv"
+    )
+
+
+if __name__ == "__main__" and os.getenv("PANAS_CHILD") != "1":
+    model_files = discover_model_files(DATA_DIR)
+    if not model_files:
+        raise FileNotFoundError(f"No model CSV files found in {DATA_DIR}")
+
+    batch_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+    script_path = Path(__file__).resolve()
+    failures = []
+
+    print("=" * 70)
+    print("PANAS batch run")
+    print("=" * 70)
+    print(f"Models found: {len(model_files)}")
+    print(f"Batch output folder: results/{batch_id}/ and figures/{batch_id}/")
+
+    for model_file in model_files:
+        print(f"\nRunning model: {model_file.name}")
+        env = os.environ.copy()
+        env["PANAS_CHILD"] = "1"
+        env["PANAS_BATCH_ID"] = batch_id
+        env["PANAS_OUTPUT_TAG"] = model_file.stem
+        env["PANAS_GPT_CSV"] = str(model_file)
+        proc = subprocess.run([sys.executable, str(script_path)], env=env)
+        if proc.returncode != 0:
+            failures.append(model_file.name)
+
+    print("\n" + "=" * 70)
+    if failures:
+        print("Batch completed with failures:")
+        for name in failures:
+            print(f"  - {name}")
+        sys.exit(1)
+
+    print("Batch completed successfully for all model files.")
+    sys.exit(0)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # STEP 1 & 2: Load and preprocess data
 # ─────────────────────────────────────────────────────────────────────────────
@@ -176,14 +239,20 @@ print("=" * 70)
 print("STEP 1: Loading and inspecting data")
 print("=" * 70)
 
-# --- GPT data (already numeric, image × item means) ---
-df_gpt_raw = pd.read_csv(DATA_DIR / "gpt4.csv", index_col=0)
+# --- GPT/model data (already numeric, image × item means) ---
+gpt_csv_env = os.getenv("PANAS_GPT_CSV")
+gpt_csv_path = Path(gpt_csv_env) if gpt_csv_env else (DATA_DIR / "gpt4.csv")
+if not gpt_csv_path.is_absolute():
+    gpt_csv_path = (ROOT / gpt_csv_path).resolve()
+
+df_gpt_raw = pd.read_csv(gpt_csv_path, index_col=0)
 df_gpt_raw.index = df_gpt_raw.index.str.strip().str.lower()
 
 # Normalise column names: "image 1" → 1 (int)
 df_gpt_raw.columns = [int(c.strip().split()[-1]) for c in df_gpt_raw.columns]
 
-print(f"\nGPT data: {df_gpt_raw.shape[1]} images × {df_gpt_raw.shape[0]} items")
+print(f"\nModel file: {gpt_csv_path.name}")
+print(f"Model data: {df_gpt_raw.shape[1]} images × {df_gpt_raw.shape[0]} items")
 print("Items:", list(df_gpt_raw.index))
 
 # --- Human raw data ---
