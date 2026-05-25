@@ -79,9 +79,9 @@ Eighty-four human participants (after exclusion of one incomplete response recor
 
 We compared PA and NA subscale means on ten matched image-level means per model using Wilcoxon signed-rank tests and Bayesian paired *t*-tests (**Table 2**).
 
-**Negative affect underestimation was prevalent but heterogeneous.** Nine of seventeen models showed strong or moderate evidence for NA underestimation. The strongest NA underestimation was observed in GPT-4.1 (Cohen's *d* = 0.942, BF₁₀ = 57.9), followed by Claude Sonnet 4.6 (d = 0.732, BF₁₀ = 85.0), GPT-5.4-mini (d = 0.735, BF₁₀ = 5.9), Claude Opus 4.6 (d = 0.689, BF₁₀ = 48.0), GPT-5.4 (d = 0.540, BF₁₀ = 33.0), GPT-4.1-mini (d = 0.582, BF₁₀ = 164.7), and Gemini 2.5-Flash (d = 0.544, BF₁₀ = 0.73). Critically, three models showed negligible NA bias: GPT-4.1-nano (d = −0.048, BF₁₀ = 0.32), LLaMA-4-Scout (d = −0.082, BF₁₀ = 0.40), and Qwen3-VL-235B (d = −0.156, BF₁₀ = 0.72). LLaMA-3.2-90B-Vision and LLaMA-4-Maverick variants showed small, inconclusive NA underestimation (d = 0.36–0.50, BF₁₀ = 1.25–3.53).
+**Negative affect underestimation was prevalent but heterogeneous.** Eight of seventeen models showed moderate-to-very-strong evidence for NA underestimation (BF₁₀ > 3). The strongest NA underestimation was observed in GPT-4.1 (Cohen's *d* = 0.942, BF₁₀ = 57.9), followed by Claude Sonnet 4.6 (d = 0.732, BF₁₀ = 85.0), GPT-5.4-mini (d = 0.735, BF₁₀ = 5.9), Claude Opus 4.6 (d = 0.689, BF₁₀ = 48.0), GPT-5.4 (d = 0.540, BF₁₀ = 33.0), GPT-4.1-mini (d = 0.582, BF₁₀ = 164.7), Gemini 2.5-Pro (d = 0.522, BF₁₀ = 5.0), and LLaMA-4-Maverick-FP8 (d = 0.503, BF₁₀ = 3.53). Critically, three models showed negligible NA bias: GPT-4.1-nano (d = −0.048, BF₁₀ = 0.32), LLaMA-4-Scout (d = −0.082, BF₁₀ = 0.40), and Qwen3-VL-235B (d = −0.156, BF₁₀ = 0.72). Gemini 2.5-Flash showed NA underestimation in direction (d = 0.544) but with inconclusive Bayesian evidence (BF₁₀ = 0.73). LLaMA-3.2-90B-Vision and LLaMA-4-Maverick-Turbo also showed small, inconclusive NA underestimation (d = 0.44–0.49, BF₁₀ = 1.89–2.81).
 
-**Positive affect patterns were model-family-specific.** GPT-4.1 (d = −0.049, BF₁₀ = 0.32), GPT-5.4 (d = 0.063, BF₁₀ = 0.33), GPT-5.4-mini (d = −0.090, BF₁₀ = 0.35), and GPT-4.1-nano (d = −0.216, BF₁₀ = 0.50) all showed equivalence with human PA (BF₁₀ < 1, providing anecdotal evidence *for* equivalence). Claude models were divergent within family: Haiku 4.5 significantly overestimated PA (d = −0.615, BF₁₀ = 38.6), while Sonnet 4.6 (d = 0.467, BF₁₀ = 6.9) showed moderate underestimation and Opus 4.6 (d = 0.322, BF₁₀ = 1.30) showed marginal, inconclusive underestimation. Both Gemini models substantially underestimated PA (Flash: d = 1.378, BF₁₀ = 671.2; Pro: d = 0.920, BF₁₀ = 58.4). GPT-5.4-nano showed strong PA overestimation (d = −0.920, BF₁₀ = 33.7; PA mean = 3.116 versus human 2.648), constituting the largest PA deviation of any model. Qwen3-VL-235B showed moderate PA overestimation (d = −0.607, BF₁₀ = 13.1; PA mean = 2.986). LLaMA-4-Scout showed no significant PA bias (d = −0.299, BF₁₀ = 0.87). LLaMA-3.2-90B-Vision and LLaMA-4-Maverick variants showed small, inconclusive PA underestimation (d = 0.36–0.41, BF₁₀ = 1.25–1.68).
+**Positive affect patterns were model-family-specific.** GPT-4.1 (d = −0.049, BF₁₀ = 0.32), GPT-5.4 (d = 0.063, BF₁₀ = 0.33), GPT-5.4-mini (d = −0.090, BF₁₀ = 0.35), and GPT-4.1-nano (d = −0.216, BF₁₀ = 0.50) all showed small effects with Bayesian support favouring little-to-no difference rather than strong evidence of equivalence. Claude models were divergent within family: Haiku 4.5 overestimated PA (d = −0.615, BF₁₀ = 38.6), while Sonnet 4.6 (d = 0.467, BF₁₀ = 6.9) showed moderate underestimation and Opus 4.6 (d = 0.322, BF₁₀ = 1.30) showed marginal, inconclusive underestimation. Both Gemini models substantially underestimated PA (Flash: d = 1.378, BF₁₀ = 671.2; Pro: d = 0.920, BF₁₀ = 58.4). GPT-5.4-nano showed strong PA overestimation (d = −0.920, BF₁₀ = 33.7; PA mean = 3.116 versus human 2.648), constituting the largest PA deviation of any model. Qwen3-VL-235B showed moderate PA overestimation (d = −0.607, BF₁₀ = 13.1; PA mean = 2.986). LLaMA-4-Scout showed no clear PA bias (d = −0.299, BF₁₀ = 0.87). LLaMA-3.2-90B-Vision and LLaMA-4-Maverick variants showed small, inconclusive PA underestimation (d = 0.36–0.41, BF₁₀ = 1.25–1.68).
 
 **Table 2 | Subscale bias by model: Cohen's *d* and Bayes Factors (N = 10 matched images).**
 
@@ -105,7 +105,10 @@ We compared PA and NA subscale means on ten matched image-level means per model 
 | LLaMA-4-Scout | −0.299 | 0.87 | −0.082 | 0.40 |
 | Qwen3-VL-235B | −0.607** | 13.1 | −0.156 | 0.72 |
 
-*Positive d = model underestimates (Human > Model); negative d = model overestimates. BF₁₀: anecdotal [1–3], moderate [3–10], strong [10–30], very strong [>30]. \* BF₁₀ > 3; \*\* BF₁₀ > 10. Given df = 8 for all subscale tests, effect sizes and Bayes Factors are the primary inferential quantities.*
+*Positive d = model underestimates (Human > Model); negative d = model overestimates. BF₁₀: anecdotal [1–3], moderate [3–10], strong [10–30], very strong [>30]. \* BF₁₀ > 3; \*\* BF₁₀ > 10. With N = 10 matched images, paired t-tests use df = 9. Effect sizes and Bayes Factors are the primary inferential quantities.*
+
+**Visual summary (subscale bias).** Two-panel forest plot of Cohen's *d* effect sizes for PA (left, circles) and NA (right, triangles), with bootstrap 95% confidence intervals (N = 10 matched images per model). Positive *d* indicates model underestimation relative to humans.
+![Subscale Bias Profiles](figures/20260325_234158/manuscript/figure3_subscale_bias.png)
 
 ---
 
@@ -119,27 +122,32 @@ We evaluated agreement between human and each model's ratings at the level of 20
 
 **Bland–Altman analysis.** The mean difference (Human − Model) ranged from −0.222 (Qwen3-VL-235B, slight overestimation) to +0.570 (Gemini 2.5-Flash, substantial underestimation). The 95% limits of agreement (LoA) spanned approximately 1.6–3.3 scale points across models. Gemini 2.5-Flash showed the widest LoA (width = 3.27 scale points, spanning 65% of the 5-point PANAS range), reflecting both systematic bias and high random error. GPT-5.4-nano showed the second widest LoA (width = 2.78), driven by its severe PA overestimation. Claude Opus 4.6 showed the narrowest LoA (width = 1.59), indicating the smallest random error, followed closely by GPT-5.4 (width = 1.64), Claude Sonnet 4.6 (width = 1.63), GPT-5.2 (width = 1.67), and Qwen3-VL-235B (width = 1.77).
 
+**Direct pairwise error.** As an intuitive cross-study summary, we also computed mean absolute error (MAE) and root mean squared error (RMSE) between human and model means across the same 200 item × image pairs after normalising PANAS scores to the 0–1 range. GPT-5.4 showed the lowest normalised MAE (0.087), followed by GPT-5.2 (0.088), Claude Opus 4.6 (0.094), GPT-4.1-mini (0.097), LLaMA-4-Scout (0.097), and Qwen3-VL-235B (0.097). The largest direct errors were observed for Gemini 2.5-Flash (MAE = 0.202), GPT-5.4-nano (0.139), and Gemini 2.5-Pro (0.131), matching the broader agreement hierarchy.
+
 **Table 3 | Agreement metrics by model (N = 200 item × image pairs per model).**
 
-| Model | ICC₂ | Pearson *r* | Spearman ρ | BA mean diff | BA LoA |
-|:---|:---:|:---:|:---:|:---:|:---:|
-| Claude Haiku 4.5 | 0.808 | 0.817 | 0.817 | −0.092 | [−1.148, +0.964] |
-| Claude Sonnet 4.6 | 0.800 | 0.868 | 0.879 | +0.332 | [−0.484, +1.147] |
-| Claude Opus 4.6 | 0.823 | 0.875 | 0.885 | +0.284 | [−0.510, +1.079] |
-| Gemini 2.5-Flash | 0.464 | 0.563 | 0.657 | +0.570 | [−1.065, +2.205] |
-| Gemini 2.5-Pro | 0.735 | 0.818 | 0.844 | +0.403 | [−0.615, +1.421] |
-| GPT-4.1 | 0.779 | 0.811 | 0.822 | +0.241 | [−0.799, +1.281] |
-| GPT-4.1-mini | 0.831 | 0.859 | 0.869 | +0.220 | [−0.665, +1.104] |
-| GPT-4.1-nano | 0.763 | 0.767 | 0.776 | −0.072 | [−1.143, +1.000] |
-| GPT-5.2 | 0.820 | 0.859 | — | +0.187 | [−0.645, +1.020] |
-| GPT-5.4 | 0.859 | 0.878 | — | +0.176 | [−0.642, +0.995] |
-| GPT-5.4-mini | 0.791 | 0.809 | — | +0.178 | [−0.819, +1.176] |
-| GPT-5.4-nano | 0.660 | 0.663 | — | −0.072 | [−1.460, +1.316] |
-| LLaMA-3.2-90B-Vision | 0.760 | 0.808 | — | +0.213 | [−0.745, +1.172] |
-| LLaMA-4-Maverick-FP8 | 0.771 | 0.824 | — | +0.231 | [−0.691, +1.152] |
-| LLaMA-4-Maverick-Turbo | 0.747 | 0.801 | — | +0.238 | [−0.736, +1.212] |
-| LLaMA-4-Scout | 0.820 | 0.829 | — | −0.113 | [−1.040, +0.813] |
-| Qwen3-VL-235B | 0.826 | 0.854 | — | −0.222 | [−1.105, +0.661] |
+| Model | ICC₂ | Pearson *r* | Spearman ρ | MAE (0–1) | RMSE (0–1) | BA mean diff | BA LoA |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Claude Haiku 4.5 | 0.808 | 0.817 | 0.817 | 0.106 | 0.136 | −0.092 | [−1.148, +0.964] |
+| Claude Sonnet 4.6 | 0.800 | 0.868 | 0.879 | 0.101 | 0.133 | +0.332 | [−0.484, +1.147] |
+| Claude Opus 4.6 | 0.823 | 0.875 | 0.885 | 0.094 | 0.124 | +0.284 | [−0.510, +1.079] |
+| Gemini 2.5-Flash | 0.464 | 0.563 | 0.657 | 0.202 | 0.252 | +0.570 | [−1.065, +2.205] |
+| Gemini 2.5-Pro | 0.735 | 0.818 | 0.844 | 0.131 | 0.164 | +0.403 | [−0.615, +1.421] |
+| GPT-4.1 | 0.779 | 0.811 | 0.822 | 0.111 | 0.145 | +0.241 | [−0.799, +1.281] |
+| GPT-4.1-mini | 0.831 | 0.859 | 0.869 | 0.097 | 0.125 | +0.220 | [−0.665, +1.104] |
+| GPT-4.1-nano | 0.763 | 0.767 | 0.776 | 0.103 | 0.138 | −0.072 | [−1.143, +1.000] |
+| GPT-5.2 | 0.820 | 0.859 | — | 0.088 | 0.116 | +0.187 | [−0.645, +1.020] |
+| GPT-5.4 | 0.859 | 0.878 | — | 0.087 | 0.113 | +0.176 | [−0.642, +0.995] |
+| GPT-5.4-mini | 0.791 | 0.809 | — | 0.101 | 0.135 | +0.178 | [−0.819, +1.176] |
+| GPT-5.4-nano | 0.660 | 0.663 | — | 0.139 | 0.178 | −0.072 | [−1.460, +1.316] |
+| LLaMA-3.2-90B-Vision | 0.760 | 0.808 | — | 0.100 | 0.133 | +0.213 | [−0.745, +1.172] |
+| LLaMA-4-Maverick-FP8 | 0.771 | 0.824 | — | 0.098 | 0.131 | +0.231 | [−0.691, +1.152] |
+| LLaMA-4-Maverick-Turbo | 0.747 | 0.801 | — | 0.101 | 0.137 | +0.238 | [−0.736, +1.212] |
+| LLaMA-4-Scout | 0.820 | 0.829 | — | 0.097 | 0.121 | −0.113 | [−1.040, +0.813] |
+| Qwen3-VL-235B | 0.826 | 0.854 | — | 0.097 | 0.125 | −0.222 | [−1.105, +0.661] |
+
+**Visual summary (agreement).** Scatter plots (human vs. model item × image means) and per-model Bland–Altman panels for all seventeen models.
+![Agreement Between Human and Models](figures/20260325_234158/manuscript/figure1_agreement.png)
 
 ---
 
@@ -177,6 +185,9 @@ Thirteen models showed strong RSA correspondence (ρ ≥ 0.813). GPT-5.4 achieve
 | LLaMA-4-Scout | 0.839 | [0.736, 0.907] | [0.769, 0.895] | 0.986 |
 | Qwen3-VL-235B | 0.873 | [0.775, 0.928] | [0.821, 0.916] | 0.987 |
 
+**Visual summary (representational geometry).** Human and model RDM panels, RSA ranking with confidence intervals, per-image cosine spread, and LOO-RSA ranges.
+![Representational Geometry Across Models](figures/20260325_234158/manuscript/figure2_geometry.png)
+
 ---
 
 ### CFA: observed limitations
@@ -188,6 +199,9 @@ Confirmatory factor analysis (CFA) of the standard two-factor PANAS model was at
 ### Robustness checks
 
 Bootstrap confidence intervals (B = 1,000) on human PA and NA means were narrow (human PA: [2.619, 2.677]; human NA: [1.940, 1.990]). Variance partitioning within the human data (LME Model A) revealed that essentially all rating variance was attributable to stimulus × item content rather than stable individual differences (participant ICC ≈ 0.000, residual variance = 1.609), indicating that the 10-image PANAS design is dominated by stimulus-driven variance — which supports treating image-level means as the appropriate unit of comparison. Split-half reliability of human image × item means was *r* = 0.968 (Spearman–Brown = 0.984), confirming a highly stable human reference. Global permutation tests showed significant overall mean differences for models with large systematic bias (Gemini 2.5-Flash: *p* = .009) and non-significant for models with near-zero bias (GPT-4.1-nano: *p* = .493; GPT-5.4: *p* = .046, reflecting slight but detectable overall underestimation).
+
+**Visual summary (overall model performance).** Heatmap integrating agreement, geometry, bias magnitude, and LoA precision on a common normalized scale.
+![Model Performance Summary Heatmap](figures/20260325_234158/manuscript/figure4_performance_heatmap.png)
 
 ---
 
@@ -217,7 +231,7 @@ This study presents the first systematic cross-family benchmark of VLMs as synth
 
 **Limitations.** Several constraints temper these conclusions.
 
-*Stimulus scope.* The stimulus set comprised only ten VR images, yielding df = 8 for all image-level analyses. LOO-RSA addresses the single-stimulus concern directly, but the generalisability of findings across broader VR stimulus spaces — including dynamic environments, panoramic sequences, and varied building programmes — remains to be established.
+*Stimulus scope.* The stimulus set comprised only ten VR images, yielding limited statistical power and small degrees of freedom for image-level analyses (for example, paired subscale comparisons use df = 9). LOO-RSA addresses the single-stimulus concern directly, but the generalisability of findings across broader VR stimulus spaces — including dynamic environments, panoramic sequences, and varied building programmes — remains to be established.
 
 *VLM aggregation.* All VLM data were pre-aggregated across ten model runs per image; individual-run variability is not characterised. This precludes estimation of within-model reliability or test-retest stability.
 
@@ -267,11 +281,11 @@ $$\bar{y}_{jk}^{\text{human}} \sim \beta_0 + \beta_1 \bar{y}_{jk}^{\text{VLM}} +
 
 where $j$ indexes images (1–10) and $k$ indexes PANAS items. Fitted with REML. Significance of $\beta_1$ tests whether model ratings track human aggregate affect after accounting for image-level clustering.
 
-**Subscale comparisons.** Wilcoxon signed-rank tests (paired, two-sided) and paired *t*-tests were conducted on N = 10 matched image-level PA and NA means per model. Effect sizes were computed as Cohen's *d* from paired differences. Given df = 8, effect sizes and Bayes Factors are the primary inferential quantities. Bayes Factors (BF₁₀) were computed using the JZS prior (Cauchy scale $r = \sqrt{2}/2$) via the pingouin implementation of the Rouder et al.²⁶ formula.
+**Subscale comparisons.** Wilcoxon signed-rank tests (paired, two-sided) and paired *t*-tests were conducted on N = 10 matched image-level PA and NA means per model. Effect sizes were computed as standardized mean differences on matched image-level means (reported as Cohen's *d* in outputs). For paired *t*-tests with N = 10 matched images, df = 9. Bayes Factors (BF₁₀) were computed using the JZS prior (Cauchy scale $r = \sqrt{2}/2$) via the pingouin implementation of the Rouder et al.²⁶ formula.
 
 ### Agreement analysis
 
-ICC was computed using the pingouin `intraclass_corr` function on 200 item × image pairs per model (two raters: human aggregate mean, model mean). ICC₂ (two-way random effects, absolute agreement, single measures) is reported as the primary metric. Pearson and Spearman correlations were computed on the same 200 pairs. Bootstrap 95% CIs for Pearson *r* were derived from 1,000 paired resamples. Bland–Altman analysis¹⁶ used difference (Human − Model) plotted against mean of the two raters; 95% limits of agreement were defined as mean difference ± 1.96 SD of differences.
+ICC was computed using the pingouin `intraclass_corr` function on 200 item × image pairs per model (two raters: human aggregate mean, model mean). ICC₂ (two-way random effects, absolute agreement, single measures) is reported as the primary metric. Pearson and Spearman correlations were computed on the same 200 pairs. For cross-study comparability, mean absolute error (MAE) and root mean squared error (RMSE) were computed after normalising human and model PANAS scores from the 1–5 scale to the 0–1 range using $(x - 1) / 4$. Bootstrap 95% CIs for Pearson *r* were derived from 1,000 paired resamples. Bland–Altman analysis¹⁶ used difference (Human − Model) plotted against mean of the two raters on the original 1–5 scale; 95% limits of agreement were defined as mean difference ± 1.96 SD of differences.
 
 ### Representational similarity analysis
 
@@ -378,19 +392,3 @@ The authors declare no competing interests.
 32. Shemesh, A. *et al.* Affective response to architecture — investigating human reaction to spaces with different geometry. *Archit. Sci. Rev.* **60**, 116–125 (2017).
 
 33. Morina, N. *et al.* Can virtual reality exposure therapy gains be generalized to real-life? A meta-analysis of studies applying behavioral assessments. *Behav. Res. Ther.* **74**, 18–24 (2015).
-
----
-
-## Figures
-
-**Figure 1 | Agreement between human and VLM PANAS ratings.**
-(a) Scatter plots of human vs. model item × image means for all seventeen models (N = 200 pairs per panel), with identity line and linear regression overlaid. Panels arranged by ICC₂ (descending), family-colour-coded. (b) Bland–Altman plots for each model: difference (Human − Model) against mean of the two raters, with mean difference (solid line) and 95% limits of agreement (dashed lines). Models with ICC₂ < 0.75 highlighted.
-
-**Figure 2 | Representational geometry across models.**
-(a) Human representational dissimilarity matrix (RDM; 10 × 10, correlation distance). (b) Model RDMs for each VLM. (c) RSA scatter plots: model RDM upper-triangular values against human RDM values, annotated with Spearman ρ. (d) Per-image cosine similarity (human vs. model), by model, ordered by RSA ρ. (e) LOO-RSA estimates for each model, showing range across 10 leave-one-out subsets. Outlier models (Gemini 2.5-Flash, GPT-5.4-nano) highlighted.
-
-**Figure 3 | Subscale bias profiles across models.**
-Forest plot of Cohen's *d* effect sizes for PA (circles) and NA (triangles) subscale comparisons (N = 10 matched image-level means per model), with 95% confidence intervals. Models grouped by family and ordered within family by capability tier. Shading indicates Bayesian evidence category (BF₁₀). Horizontal reference at d = 0 (equivalence). The NA underestimation bias pattern is visible across nine models; three models (LLaMA-4-Scout, Qwen3-VL-235B, GPT-4.1-nano) cluster near the equivalence line on both subscales.
-
-**Figure 4 | Model performance summary heatmap.**
-Heatmap summarising ICC₂, RSA ρ, |PA d|, |NA d|, and BA LoA width for all seventeen models, clustered by model family. Colour scales indicate performance (darker = better for ICC/RSA; lighter = less bias for d). The two-cluster structure separating the 14 well-performing models from Gemini 2.5-Flash and GPT-5.4-nano is visible.
