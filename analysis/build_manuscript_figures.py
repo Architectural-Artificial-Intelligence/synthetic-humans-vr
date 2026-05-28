@@ -17,6 +17,33 @@ import seaborn as sns
 
 sns.set_theme(style="whitegrid", font_scale=0.95)
 
+PA_ITEMS = {
+    "interested",
+    "excited",
+    "strong",
+    "enthusiastic",
+    "proud",
+    "alert",
+    "inspired",
+    "determined",
+    "attentive",
+    "active",
+}
+NA_ITEMS = {
+    "nervous",
+    "upset",
+    "guilty",
+    "scared",
+    "hostile",
+    "irritable",
+    "ashamed",
+    "jittery",
+    "distressed",
+    "afraid",
+}
+SUBSCALE_ITEMS = {"PA": PA_ITEMS, "NA": NA_ITEMS}
+SUBSCALE_COLORS = {"PA": "#2563eb", "NA": "#dc2626"}
+
 
 def rdm_correlation_distance(mat: np.ndarray) -> np.ndarray:
     """Compute square RDM using correlation distance (1 - Pearson r)."""
@@ -91,6 +118,7 @@ def load_model_bundle(model_dir: Path) -> dict | None:
         model_dir / "rsa_results.json",
         model_dir / "effect_sizes.json",
         model_dir / "merged_image_item.csv",
+        model_dir / "human_long.csv",
     ]
     if not all(p.exists() for p in required):
         return None
@@ -103,6 +131,7 @@ def load_model_bundle(model_dir: Path) -> dict | None:
         effect = json.load(f)
 
     merged = pd.read_csv(model_dir / "merged_image_item.csv")
+    human_long = pd.read_csv(model_dir / "human_long.csv")
 
     row = {
         "model": model_dir.name,
@@ -129,6 +158,7 @@ def load_model_bundle(model_dir: Path) -> dict | None:
         "pa_bf10": effect["PA"].get("BF10", np.nan),
         "na_bf10": effect["NA"].get("BF10", np.nan),
         "merged": merged,
+        "human_long": human_long,
         "cosine_per_image": np.array(rsa["cosine_per_image"], dtype=float),
         "loo_per_image": np.array(rsa["loo_rsa_per_image"], dtype=float),
     }
@@ -144,7 +174,11 @@ def build_summary_df(results_root: Path) -> tuple[pd.DataFrame, dict[str, dict]]
         bundle = load_model_bundle(model_dir)
         if bundle is None:
             continue
-        rows.append({k: v for k, v in bundle.items() if k not in {"merged", "cosine_per_image", "loo_per_image"}})
+        rows.append({
+            k: v
+            for k, v in bundle.items()
+            if k not in {"merged", "human_long", "cosine_per_image", "loo_per_image"}
+        })
         bundles[model_dir.name] = bundle
 
     df = pd.DataFrame(rows)
@@ -160,8 +194,239 @@ def build_human_rdm(any_bundle: dict) -> tuple[np.ndarray, list[str]]:
     human = human[common_cols].sort_index()
     h_mat = human.values
     rdm = rdm_correlation_distance(h_mat)
-    labels = [f"Im.{i}" for i in human.index]
+    labels = [str(i) for i in human.index]
     return rdm, labels
+
+
+def image_subscale_scores(bundle: dict) -> pd.DataFrame:
+    """Aggregate to one row per stimulus image and PA/NA subscale."""
+    human_long = bundle["human_long"].copy()
+    merged = bundle["merged"].copy()
+    rows = []
+
+    for subscale, items in SUBSCALE_ITEMS.items():
+        human_sub = human_long[human_long["item"].isin(items)]
+        model_sub = merged[merged["item"].isin(items)]
+
+        human_participant_image = (
+            human_sub.groupby(["image", "participant"], as_index=False)["score"]
+            .mean()
+            .rename(columns={"score": "participant_image_mean"})
+        )
+        human_stats = (
+            human_participant_image.groupby("image")["participant_image_mean"]
+            .agg(human_mean="mean", human_sd="std", n_human="count")
+            .reset_index()
+        )
+
+        model_stats = (
+            model_sub.groupby("image")["gpt_mean"]
+            .agg(model_mean="mean", model_item_sd="std", n_items="count")
+            .reset_index()
+        )
+        out = pd.merge(human_stats, model_stats, on="image", how="inner")
+        out.insert(1, "subscale", subscale)
+        out["model_run_sd"] = np.nan
+        rows.append(out)
+
+    return pd.concat(rows, ignore_index=True)
+
+
+def figure1_top_model_mean_scatter(
+    df: pd.DataFrame,
+    bundles: dict[str, dict],
+    out: Path,
+    n_models: int = 3,
+) -> None:
+    """Human mean vs model mean for the best-performing models."""
+    shown = df.head(n_models).copy()
+
+    fig, axs = plt.subplots(1, len(shown), figsize=(12.8, 4.9), sharex=True, sharey=True, constrained_layout=True)
+    fig.set_constrained_layout_pads(w_pad=0.18, h_pad=0.22, wspace=0.12, hspace=0.08)
+    if len(shown) == 1:
+        axs = np.array([axs])
+    recs = []
+    all_x = []
+    all_y = []
+    per_model_stats = {}
+    for _, r in shown.iterrows():
+        model = r["model"]
+        stats_df = image_subscale_scores(bundles[model])
+        stats_df.insert(0, "model", model)
+        stats_df.insert(1, "model_label", r["model_label"])
+        recs.append(stats_df)
+        per_model_stats[model] = stats_df
+        all_x.extend(stats_df["human_mean"].to_numpy(dtype=float))
+        all_y.extend(stats_df["model_mean"].to_numpy(dtype=float))
+
+    lim0 = min(min(all_x), min(all_y)) - 0.15
+    lim1 = max(max(all_x), max(all_y)) + 0.15
+
+    for ax, (_, r) in zip(axs, shown.iterrows()):
+        model = r["model"]
+        stats_df = per_model_stats[model]
+
+        x = stats_df["human_mean"].to_numpy(dtype=float)
+        y = stats_df["model_mean"].to_numpy(dtype=float)
+
+        for subscale in ["PA", "NA"]:
+            sub = stats_df[stats_df["subscale"] == subscale]
+            ax.scatter(
+                sub["human_mean"],
+                sub["model_mean"],
+                s=72,
+                color=SUBSCALE_COLORS[subscale],
+                edgecolor="white",
+                linewidth=0.9,
+                alpha=0.90,
+                label=subscale,
+                zorder=3,
+            )
+
+        for _, row in stats_df.iterrows():
+            ax.text(
+                row["human_mean"],
+                row["model_mean"],
+                str(int(row["image"])),
+                ha="center",
+                va="center",
+                fontsize=7,
+                color="white",
+                fontweight="bold",
+                zorder=4,
+            )
+
+        ax.plot([lim0, lim1], [lim0, lim1], ls="--", lw=1.0, c="#333333", alpha=0.65, zorder=2)
+        ax.set_xlim(lim0, lim1)
+        ax.set_ylim(lim0, lim1)
+        ax.set_aspect("equal", adjustable="box")
+        ax.set_title(f"{r['model_label']}\nICC2={r['icc2']:.3f}, RSA={r['rsa_rho']:.3f}", fontsize=10, fontweight="bold")
+        ax.tick_params(labelsize=9)
+        ax.grid(True, alpha=0.25)
+        ax.set_xlabel("Human mean", fontsize=10)
+
+    axs[0].set_ylabel("Model mean", fontsize=10)
+    handles, labels = axs[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper center", ncol=2, frameon=False, bbox_to_anchor=(0.5, 1.02))
+
+    fig.savefig(
+        out / "figure1_human_model_scatter_top3_means.png",
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.18,
+    )
+    plt.close(fig)
+
+    pd.concat(recs, ignore_index=True).to_csv(
+        out / "figure1_human_model_scatter_top3_means_data.csv",
+        index=False,
+    )
+
+
+def figure1b_top_model_bland_altman(
+    df: pd.DataFrame,
+    bundles: dict[str, dict],
+    out: Path,
+    n_models: int = 3,
+) -> None:
+    """Bland-Altman plots for image-level human/model means."""
+    shown = df.head(n_models).copy()
+
+    fig, axs = plt.subplots(1, len(shown), figsize=(12.8, 4.9), sharey=True, constrained_layout=True)
+    fig.set_constrained_layout_pads(w_pad=0.18, h_pad=0.22, wspace=0.12, hspace=0.08)
+    if len(shown) == 1:
+        axs = np.array([axs])
+
+    recs = []
+    per_model_stats = {}
+    all_diff = []
+    all_mean = []
+    all_line_y = []
+    for _, r in shown.iterrows():
+        model = r["model"]
+        stats_df = image_subscale_scores(bundles[model])
+        stats_df.insert(0, "model", model)
+        stats_df.insert(1, "model_label", r["model_label"])
+        stats_df["ba_mean"] = (stats_df["human_mean"] + stats_df["model_mean"]) / 2.0
+        stats_df["ba_diff"] = stats_df["human_mean"] - stats_df["model_mean"]
+        per_model_stats[model] = stats_df
+        recs.append(stats_df)
+        all_mean.extend(stats_df["ba_mean"].to_numpy(dtype=float))
+        all_diff.extend(stats_df["ba_diff"].to_numpy(dtype=float))
+        for subscale in ["PA", "NA"]:
+            y_sub = stats_df.loc[stats_df["subscale"] == subscale, "ba_diff"].to_numpy(dtype=float)
+            mean_diff = float(np.mean(y_sub))
+            sd_diff = float(np.std(y_sub, ddof=1))
+            all_line_y.extend([mean_diff, mean_diff - 1.96 * sd_diff, mean_diff + 1.96 * sd_diff])
+
+    x_pad = 0.12
+    y_pad = 0.10
+    xlim = (min(all_mean) - x_pad, max(all_mean) + x_pad)
+    ylim = (min(all_diff + all_line_y) - y_pad, max(all_diff + all_line_y) + y_pad)
+
+    for ax, (_, r) in zip(axs, shown.iterrows()):
+        stats_df = per_model_stats[r["model"]]
+        for subscale in ["PA", "NA"]:
+            sub = stats_df[stats_df["subscale"] == subscale]
+            y_sub = sub["ba_diff"].to_numpy(dtype=float)
+            mean_diff = float(np.mean(y_sub))
+            sd_diff = float(np.std(y_sub, ddof=1))
+            loa_lo = mean_diff - 1.96 * sd_diff
+            loa_hi = mean_diff + 1.96 * sd_diff
+            color = SUBSCALE_COLORS[subscale]
+
+            ax.scatter(
+                sub["ba_mean"],
+                sub["ba_diff"],
+                s=72,
+                color=color,
+                edgecolor="white",
+                linewidth=0.9,
+                alpha=0.90,
+                label=subscale,
+                zorder=3,
+            )
+            ax.axhline(mean_diff, color=color, lw=1.2, zorder=2)
+            ax.axhline(loa_lo, color=color, lw=0.9, ls="--", alpha=0.55, zorder=2)
+            ax.axhline(loa_hi, color=color, lw=0.9, ls="--", alpha=0.55, zorder=2)
+
+        for _, row in stats_df.iterrows():
+            ax.text(
+                row["ba_mean"],
+                row["ba_diff"],
+                str(int(row["image"])),
+                ha="center",
+                va="center",
+                fontsize=7,
+                color="white",
+                fontweight="bold",
+                zorder=4,
+            )
+
+        ax.axhline(0, color="#333333", lw=0.9, alpha=0.55, zorder=1)
+        ax.set_xlim(*xlim)
+        ax.set_ylim(*ylim)
+        ax.set_title(r["model_label"], fontsize=10, fontweight="bold")
+        ax.tick_params(labelsize=9)
+        ax.grid(True, alpha=0.25)
+        ax.set_xlabel("Mean of human and model", fontsize=10)
+
+    axs[0].set_ylabel("Human - model", fontsize=10)
+    handles, labels = axs[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper center", ncol=2, frameon=False, bbox_to_anchor=(0.5, 1.02))
+
+    fig.savefig(
+        out / "figure1b_bland_altman_top3_image_means.png",
+        dpi=300,
+        bbox_inches="tight",
+        pad_inches=0.18,
+    )
+    plt.close(fig)
+
+    pd.concat(recs, ignore_index=True).to_csv(
+        out / "figure1b_bland_altman_top3_image_means_data.csv",
+        index=False,
+    )
 
 
 def figure1_agreement(df: pd.DataFrame, bundles: dict[str, dict], out: Path) -> None:
@@ -263,12 +528,22 @@ def figure2_geometry(df: pd.DataFrame, bundles: dict[str, dict], out: Path) -> N
     shown = top_models + [m for m in low_models if m not in top_models]
     shown = shown[:6]
 
-    fig = plt.figure(figsize=(18, 12), constrained_layout=True)
-    gs = fig.add_gridspec(3, 4)
+    fig_rdm = plt.figure(figsize=(10.2, 5.4), constrained_layout=True)
+    fig_rdm.set_constrained_layout_pads(w_pad=0.02, h_pad=0.02, wspace=0.02, hspace=0.04)
+    rdm_gs = fig_rdm.add_gridspec(2, 4, width_ratios=[1.0, 1.0, 1.0, 1.0])
 
-    ax_h = fig.add_subplot(gs[0, 0])
-    sns.heatmap(human_rdm, ax=ax_h, cmap="viridis", xticklabels=labels, yticklabels=labels, cbar=False)
-    ax_h.set_title("Human RDM")
+    ax_h = fig_rdm.add_subplot(rdm_gs[:, 0])
+    sns.heatmap(
+        human_rdm,
+        ax=ax_h,
+        cmap="viridis",
+        xticklabels=labels,
+        yticklabels=labels,
+        cbar=False,
+        square=True,
+    )
+    ax_h.set_title("Human", fontsize=9, fontweight="bold")
+    ax_h.tick_params(axis="both", labelsize=7)
 
     for i, model in enumerate(shown):
         r = bundles[model]
@@ -277,13 +552,23 @@ def figure2_geometry(df: pd.DataFrame, bundles: dict[str, dict], out: Path) -> N
         h_mat = merged.pivot(index="image", columns="item", values="human_mean").sort_index()
         common_cols = sorted(set(model_mat.columns) & set(h_mat.columns))
         g_rdm = rdm_correlation_distance(model_mat[common_cols].values)
-        row = 0 if i < 3 else 1
-        col = 1 + (i % 3)
-        ax = fig.add_subplot(gs[row, col])
-        sns.heatmap(g_rdm, ax=ax, cmap="viridis", xticklabels=False, yticklabels=False, cbar=False)
+        row, col = divmod(i, 3)
+        ax = fig_rdm.add_subplot(rdm_gs[row, col + 1])
+        sns.heatmap(
+            g_rdm,
+            ax=ax,
+            cmap="viridis",
+            xticklabels=False,
+            yticklabels=False,
+            cbar=False,
+            square=True,
+        )
         ax.set_title(f"{pretty_model(model)}\nRSA={r['rsa_rho']:.3f}", fontsize=9)
 
-    ax_rsa = fig.add_subplot(gs[2, 0:2])
+    fig_rdm.savefig(out / "figure2a_rdm_heatmaps.png", dpi=300, bbox_inches="tight", pad_inches=0.05)
+    plt.close(fig_rdm)
+
+    fig_rank, ax_rsa = plt.subplots(figsize=(5.6, 6.7), constrained_layout=True)
     df_rsa = df.sort_values("rsa_rho", ascending=True)
     y = np.arange(len(df_rsa))
     ax_rsa.hlines(y, df_rsa["rsa_ci_lo"], df_rsa["rsa_ci_hi"], color="gray", lw=1)
@@ -292,27 +577,10 @@ def figure2_geometry(df: pd.DataFrame, bundles: dict[str, dict], out: Path) -> N
     ax_rsa.set_yticklabels(df_rsa["model_label"], fontsize=8)
     ax_rsa.set_xlabel("RSA Spearman rho (95% CI)")
     ax_rsa.set_title("RSA Ranking")
+    ax_rsa.grid(True, axis="x", alpha=0.3)
 
-    ax_cos = fig.add_subplot(gs[2, 2])
-    cos_data = [bundles[m]["cosine_per_image"] for m in df_rsa["model"]]
-    ax_cos.boxplot(cos_data, vert=True, patch_artist=True, boxprops={"facecolor": "#9ecae1", "alpha": 0.7}, medianprops={"color": "#08519c"})
-    ax_cos.set_xticks([1, len(cos_data)])
-    ax_cos.set_xticklabels(["Best", "Worst"])
-    ax_cos.set_ylabel("Cosine")
-    ax_cos.set_title("Per-image Cosine Spread")
-
-    ax_loo = fig.add_subplot(gs[2, 3])
-    df_loo = df.sort_values("loo_mean", ascending=True)
-    y2 = np.arange(len(df_loo))
-    ax_loo.hlines(y2, df_loo["loo_min"], df_loo["loo_max"], color="#636363", lw=1.4)
-    ax_loo.scatter(df_loo["loo_mean"], y2, c="#31a354", s=20)
-    ax_loo.set_yticks([])
-    ax_loo.set_xlabel("LOO RSA")
-    ax_loo.set_title("LOO RSA Range")
-
-    fig.suptitle("Figure 2. Representational Geometry Across Models", fontsize=16, fontweight="bold")
-    fig.savefig(out / "figure2_geometry.png", dpi=300)
-    plt.close(fig)
+    fig_rank.savefig(out / "figure2b_rsa_ranking.png", dpi=300, bbox_inches="tight", pad_inches=0.12)
+    plt.close(fig_rank)
 
 
 def figure3_bias(df: pd.DataFrame, bundles: dict[str, dict], out: Path) -> None:
@@ -437,6 +705,8 @@ if __name__ == "__main__":
     if df.empty:
         raise RuntimeError(f"No model bundles found in {results_root}")
 
+    figure1_top_model_mean_scatter(df, bundles, output_dir)
+    figure1b_top_model_bland_altman(df, bundles, output_dir)
     figure1_agreement(df, bundles, output_dir)
     figure2_geometry(df, bundles, output_dir)
     figure3_bias(df, bundles, output_dir)
