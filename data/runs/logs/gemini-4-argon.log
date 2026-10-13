@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== gemini-4-argon (gemini-4-argon) T=0.7 ===
+  gemini-4-argon [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   gemini-4-argon             lines= 100 status={'ok': 100} distinct/img(min)=10 T=['0.7'] model=['gemini-4-argon']

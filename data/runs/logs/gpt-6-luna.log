@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== gpt-6-luna (gpt-6-luna) T=0.7 ===
+  gpt-6-luna [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   gpt-6-luna                 lines= 100 status={'ok': 100} distinct/img(min)=10 T=['None'] model=['gpt-6-luna']

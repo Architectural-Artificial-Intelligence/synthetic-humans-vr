@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== gpt-5.2 (gpt-5.2) T=0.7 ===
+  gpt-5.2 [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   gpt-5.2                    lines= 100 status={'ok': 100} distinct/img(min)=9 T=['0.7'] model=['gpt-5.2-2025-12-11']
