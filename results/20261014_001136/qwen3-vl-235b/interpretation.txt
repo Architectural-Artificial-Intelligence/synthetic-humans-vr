@@ -1,0 +1,87 @@
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║         ANALYSIS REPORT: Human vs. GPT-4 PANAS Affect Ratings              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+METHODS SUMMARY
+───────────────
+Participants: N = 84 human raters;
+              1 GPT-4 rater (pre-aggregated image-level means, n=10 trials/image).
+Stimuli     : 10 VR images.
+PANAS items : 20 items shared between human and GPT datasets
+              (original 20-item PANAS minus the non-overlapping 'afraid' item).
+Missing data: 0 values (0.00%) imputed using
+              item-×-image group mean.
+PA subscale : ['active', 'alert', 'attentive', 'determined', 'enthusiastic', 'excited', 'inspired', 'interested', 'proud', 'strong']
+NA subscale : ['afraid', 'ashamed', 'distressed', 'guilty', 'hostile', 'irritable', 'jittery', 'nervous', 'scared', 'upset']
+
+RESULTS SUMMARY
+───────────────
+
+1. DO GPT RATINGS SIGNIFICANTLY DIFFER FROM HUMANS?
+   Paired comparisons on image-level PA/NA means (N=10 matched images):
+     PA: Human=2.648, GPT=2.919,
+         Wilcoxon W=7, p=0.0371
+     NA: Human=1.965, GPT=2.086,
+         Wilcoxon W=9, p=0.0645
+   GPT as predictor of human image×item means (LME, Model B):
+     β(GPT) = 0.960,
+     95% CI [0.8868757305624414, 1.0326403499252965],
+     p = 0.0000
+   Paired t-test + Cohen's d (image-level means):
+     PA: d = -0.527, t(9) = -2.651, p = 0.0264, BF₁₀ = 2.88
+     NA: d = -0.190, t(9) = -2.429, p = 0.0381, BF₁₀ = 2.17
+
+2. DOES GPT AGREE WITH HUMANS (BEYOND NO-DIFFERENCE)?
+   ICC2 (absolute agreement): 0.827  95% CI [0.720, 0.890]
+   Pearson r               : 0.855  (p = 2.5763e-58)
+     Bootstrap 95% CI: [0.818, 0.888]
+   Spearman ρ              : 0.857  (p = 7.4338e-59)
+   Bland–Altman:
+     Mean difference (Human − GPT): -0.196 [CI -0.256, -0.135]
+     Limits of agreement: [-1.044, +0.653]
+     LoA span: 1.697 scale points (on 1–5 scale)
+
+3. DOES GPT REPRODUCE LATENT EMOTIONAL STRUCTURE?
+   CFA fit (Human)  – see results/cfa_results.json
+   CFA fit (GPT)    – see results/cfa_results.json
+   Measurement invariance tested (configural/metric/scalar) – see
+     results/invariance_results.json
+   RSA (Spearman on RDMs): ρ = 0.900  (p = 0.0000)
+     Bootstrap 95% CI: [0.799, 0.950]
+   Mean cosine similarity across images: 0.9892 ± 0.0078
+   Split-half reliability of human means: r = 0.972 (Spearman–Brown = 0.986)
+
+4. ROBUSTNESS
+   Permutation test (overall mean difference):
+     Observed diff = -0.196, p(permutation) = 0.0360
+   Bootstrap CI on human PA mean: [2.620473214285714, 2.6759613095238093]
+   Bootstrap CI on human NA mean: [1.9379702380952382, 1.9900059523809523]
+
+LIMITATIONS & POTENTIAL CONFOUNDS
+───────────────────────────────────
+  1. AGGREGATION ASYMMETRY: GPT data represents pre-aggregated means across
+     n=10 model runs per image; human data contains full participant-level
+     variance. This means the GPT 'rater' has lower sampling variance than
+     any individual human rater, potentially inflating agreement metrics.
+  2. PROMPT SENSITIVITY: GPT-4 ratings are contingent on the specific prompt
+     wording (English instructions for Hebrew VR stimuli). Minor phrasing
+     changes could substantially alter outputs; no prompt sensitivity analysis
+     was conducted.
+  3. CULTURAL / LINGUISTIC CONFOUND: Human participants rated stimuli in Hebrew
+     (Israeli sample); GPT ratings were generated in English. Cross-linguistic
+     semantic nuances in PANAS items (e.g., 'jittery', 'distressed') may
+     introduce systematic bias.
+  4. SMALL STIMULUS SET: N=10 images limits statistical power for image-level
+     analyses (RSA, MDS) and all image-level correlations have only 10 data
+     points per item, reducing generalisability.
+  5. INDEPENDENCE: Human participants rated all 10 images, creating dependence
+     across stimuli (within-participant). The LME accounts for participant
+     clustering but image-order effects are uncontrolled.
+  6. CFA / INVARIANCE: With only 10 observations per item for GPT, the CFA is
+     severely underpowered. Invariance testing with n=10 in one group should
+     be interpreted as exploratory only.
+  7. CONSTRUCT VALIDITY OF GPT PANAS RATINGS: GPT-4 does not 'experience'
+     affect; its ratings reflect statistical patterns in training text, not
+     genuine emotional responding. Agreement with humans may reflect shared
+     cultural-linguistic norms rather than affective equivalence.
