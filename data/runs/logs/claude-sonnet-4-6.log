@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== claude-sonnet-4-6 (claude-sonnet-4-6) T=0.7 ===
+  claude-sonnet-4-6 [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   claude-sonnet-4-6          lines= 100 status={'ok': 100} distinct/img(min)=3 T=['0.7'] model=['claude-sonnet-4-6']

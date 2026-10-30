@@ -1,0 +1,10 @@
+{
+  "n_missing": 0,
+  "pct_missing": 0.0,
+  "participants_with_any_missing": 0,
+  "cell_means_identical_after_imputation": true,
+  "n_complete_cases": 84,
+  "max_abs_cell_mean_shift_complete_case_vs_imputed": 0.0,
+  "sd_all_ratings_imputed": 1.3218286040227658,
+  "sd_all_ratings_observed_only": 1.3218286040227658
+}

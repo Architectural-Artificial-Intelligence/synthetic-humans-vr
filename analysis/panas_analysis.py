@@ -89,7 +89,7 @@ RES_DIR.mkdir(parents=True, exist_ok=True)
 # Ordered as they appear in column headers
 HEBREW_ITEM_MAP = {
     "להתעניין"    : "interested",
-    "לחוץ"        : "nervous",
+    "לחוץ"        : "distressed",
     "נרגש"        : "excited",
     "מוטרד"       : "upset",
     "חזק"         : "strong",
@@ -102,10 +102,10 @@ HEBREW_ITEM_MAP = {
     "עירני"       : "alert",
     "מבוייש"      : "ashamed",
     "שראה"        : "inspired",      # בעל/ת שראה → "inspired"
-    "עצבני"       : "jittery",
+    "עצבני"       : "nervous",
     "נחוש"        : "determined",
     "קשוב"        : "attentive",
-    "מתח"         : "distressed",
+    "מתח"         : "jittery",
     "פעיל"        : "active",
     "פחד"         : "afraid",        # extra item (not in GPT)
 }
@@ -191,7 +191,7 @@ def discover_model_files(data_dir: Path) -> list[Path]:
     """Return all model CSVs from data_dir (excluding human.csv)."""
     return sorted(
         p for p in data_dir.glob("*.csv")
-        if p.name.lower() != "human.csv"
+        if p.name.lower() not in ("human.csv", "runs_long.csv")
     )
 
 
@@ -539,7 +539,7 @@ icc_val = icc_row["ICC"].values[0] if len(icc_row) > 0 else np.nan
 icc_lo  = icc_row[ci_col].values[0][0] if len(icc_row) > 0 else np.nan
 icc_hi  = icc_row[ci_col].values[0][1] if len(icc_row) > 0 else np.nan
 
-print(f"\n  ICC2 (absolute agreement): {icc_val:.3f}  "
+print(f"\n  ICC(2,1) single measures, absolute agreement (pingouin 'ICC2'): {icc_val:.3f}  "
       f"95% CI [{icc_lo:.3f}, {icc_hi:.3f}]")
 print(f"\n  Full ICC table:")
 print(icc_res.to_string(index=False))
@@ -554,10 +554,9 @@ print(f"  Spearman ρ = {r_spearman:.3f}  (p={p_spearman:.4e})")
 # Bootstrap CI for Pearson r
 idx = np.arange(len(h_vec))
 def _r(a, b): return stats.pearsonr(a, b)[0]
-boot_r = [_r(h_vec[RNG.choice(idx, len(idx), replace=True)],
-              g_vec[RNG.choice(idx, len(idx), replace=True)])
-          for _ in range(N_BOOTSTRAP)]
-# proper paired bootstrap
+# Paired bootstrap over the 200 cells. NOTE: cells are not independent
+# (shared participants / images); the participant-level CIs in
+# robust_inference.py are the ones to report.
 boot_r_paired = []
 for _ in range(N_BOOTSTRAP):
     bi = RNG.choice(idx, len(idx), replace=True)
@@ -587,7 +586,14 @@ print(f"    Mean difference (Human − GPT) = {mean_diff:+.3f}  "
 print(f"    SD of differences             = {sd_diff:.3f}")
 print(f"    Limits of agreement           = [{loa_lo:+.3f}, {loa_hi:+.3f}]")
 
+mae = float(np.mean(np.abs(ba_diff)))
+rmse = float(np.sqrt(np.mean(ba_diff ** 2)))
+print(f"  MAE = {mae:.3f}  RMSE = {rmse:.3f}  "
+      f"(normalised by scale range 4: {mae/4:.3f} / {rmse/4:.3f})")
+
 agreement_results = dict(
+    MAE=mae, RMSE=rmse, nMAE_range=mae/4, nRMSE_range=rmse/4,
+    ICC_form="ICC(2,1) single measures, two-way random, absolute agreement",
     ICC2=icc_val, ICC2_lo=icc_lo, ICC2_hi=icc_hi,
     pearson_r=r_pearson, pearson_p=p_pearson,
     pearson_r_ci=[r_ci_lo, r_ci_hi],
@@ -663,61 +669,13 @@ cfa_gpt   = fit_cfa(gpt_wide,   "GPT")
 with open(RES_DIR / "cfa_results.json", "w") as f:
     json.dump({"human": cfa_human, "gpt": cfa_gpt}, f, indent=2, default=str)
 
-# ── 5b. Measurement Invariance ───────────────────────────────────────────────
-# Build stacked dataset for multi-group CFA (semopy)
-print("\n  Measurement Invariance (configural → metric → scalar):")
-
-human_wide_cfa = human_wide[all_cfa_items].dropna().copy()
-human_wide_cfa["group"] = "human"
-human_wide_cfa.index = ["H" + str(i) for i in human_wide_cfa.index]
-
-gpt_wide_cfa = gpt_wide[[c for c in all_cfa_items if c in gpt_wide.columns]].copy()
-# Fill missing GPT items with NaN (shouldn't be any in common set)
-gpt_wide_cfa["group"] = "gpt"
-
-combined_cfa = pd.concat([human_wide_cfa, gpt_wide_cfa], ignore_index=True)
-combined_cfa = combined_cfa[[c for c in all_cfa_items
-                              if c in combined_cfa.columns] + ["group"]]
-combined_cfa = combined_cfa.dropna()
-
-# semopy multi-group invariance
-invariance_results = {}
-for constraint_level in ["configural", "metric", "scalar"]:
-    try:
-        if constraint_level == "configural":
-            m = semopy.Model(cfa_model_spec)
-            m.fit(combined_cfa[[c for c in all_cfa_items if c in combined_cfa.columns]])
-            s = semopy.calc_stats(m)
-        else:
-            # semopy supports group-level constraints via ModelMeans or ModelEffects
-            # Use basic approach: refit separately and compare via chi-sq difference
-            m = semopy.Model(cfa_model_spec)
-            m.fit(combined_cfa[[c for c in all_cfa_items if c in combined_cfa.columns]])
-            s = semopy.calc_stats(m)
-
-        inv_row = {}
-        for idx_name, row in s.iterrows():
-            inv_row[str(idx_name)] = float(row.iloc[0]) if len(row) > 0 else np.nan
-        invariance_results[constraint_level] = inv_row
-        print(f"\n  {constraint_level.capitalize()}:")
-        print(s.to_string())
-    except Exception as e:
-        print(f"  {constraint_level} error: {e}")
-        invariance_results[constraint_level] = {}
-
-# Chi-square difference test (configural vs metric)
-def chi_sq_diff(r1, r2):
-    """Chi-square difference test between two nested models."""
-    chi1 = r1.get("chi2", np.nan)
-    chi2 = r2.get("chi2", np.nan)
-    df1  = r1.get("DoF", np.nan)
-    df2  = r2.get("DoF", np.nan)
-    if np.isnan(chi1) or np.isnan(chi2):
-        return np.nan, np.nan, np.nan
-    delta_chi = abs(chi2 - chi1)
-    delta_df  = abs(df2 - df1)
-    p_delta   = 1 - stats.chi2.cdf(delta_chi, df=max(1, int(delta_df)))
-    return delta_chi, int(delta_df), p_delta
+# ── 5b. Measurement invariance: NOT PERFORMED ───────────────────────────────
+# The earlier version fitted the same single-group model three times, so the
+# "configural/metric/scalar" rows were identical and not a real invariance test.
+# Removed; do not report. A real multi-group test needs participant-level model
+# data, which VLM runs (not participants) cannot supply in a comparable way.
+invariance_results = {"performed": False,
+                      "reason": "previous implementation was a no-op; removed"}
 
 with open(RES_DIR / "invariance_results.json", "w") as f:
     json.dump(invariance_results, f, indent=2, default=str)

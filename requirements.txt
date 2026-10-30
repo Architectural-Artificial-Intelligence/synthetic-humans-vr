@@ -15,6 +15,9 @@ seaborn
 
 # ── VLM providers (install only what you need) ────────────────────────────
 openai>=1.0           # OpenAI GPT-4 / GPT-5 / o-series
-anthropic>=0.25       # Claude models
-google-generativeai   # Gemini models
+anthropic>=1.0        # Claude models
+google-genai             # Gemini models (new SDK)
 Pillow                # image loading for Google provider
+pytest
+jinja2
+tabulate
