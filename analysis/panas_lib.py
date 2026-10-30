@@ -9,6 +9,7 @@ All metrics below take arrays shaped (n_images, n_items) in PANAS_ITEMS order.
 """
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
 
@@ -32,14 +33,30 @@ NA_ITEMS = PANAS_ITEMS[10:]
 PA_IDX = np.arange(0, 10)
 NA_IDX = np.arange(10, 20)
 
+# Hebrew form keyword -> PANAS item, aligned with the validated Hebrew PANAS
+# (Ben-Zur, 2002): עצבני/ת = nervous, מתוח/ה (here "תחושת מתח") = jittery.
+# The form's "לחוץ/ה" is not a Ben-Zur item; by elimination it stands for
+# distressed (Ben-Zur: נתון/ה במצוקה). The earlier analysis mapped
+# לחוץ->nervous, עצבני->jittery, מתח->distressed (a permutation within NA);
+# set PANAS_ITEM_MAP=legacy to reproduce it.
 HEBREW_ITEM_MAP = {
-    "להתעניין": "interested", "לחוץ": "nervous", "נרגש": "excited",
+    "להתעניין": "interested", "לחוץ": "distressed", "נרגש": "excited",
     "מוטרד": "upset", "חזק": "strong", "אשם": "guilty", "בהלה": "scared",
     "עוין": "hostile", "התלהבות": "enthusiastic", "גאה": "proud",
     "רוגז": "irritable", "עירני": "alert", "מבוייש": "ashamed",
-    "שראה": "inspired", "עצבני": "jittery", "נחוש": "determined",
-    "קשוב": "attentive", "מתח": "distressed", "פעיל": "active",
+    "שראה": "inspired", "עצבני": "nervous", "נחוש": "determined",
+    "קשוב": "attentive", "מתח": "jittery", "פעיל": "active",
     "פחד": "afraid",
+}
+if os.getenv("PANAS_ITEM_MAP") == "legacy":
+    HEBREW_ITEM_MAP.update({"לחוץ": "nervous", "עצבני": "jittery", "מתח": "distressed"})
+
+# Model keys that the provider silently served with another model (the
+# returned model ID differs and the outputs are identical to that model's).
+# They are not distinct models and are excluded from all analyses.
+ALIAS_DUPLICATES = {
+    "gemini-3.5-flash": "gemini-3.6-flash",
+    "gemini-3.7-flash": "gemini-3.8-flash",
 }
 LIKERT_MAP = {"כלל לא": 1, "מעט": 2, "במידה בינונית": 3,
               "במידה רבה": 4, "רבה מאוד": 5}
@@ -101,9 +118,14 @@ def impute_cell_mean(arr: np.ndarray) -> np.ndarray:
 
 
 # ── Model data ─────────────────────────────────────────────────────────────
-def load_runs_long(path: Path | None = None, tag: str = "main") -> pd.DataFrame:
-    df = pd.read_csv(path or DATA_DIR / "runs_long.csv")
-    return df[df["tag"] == tag].copy()
+def drop_aliases(df: pd.DataFrame) -> pd.DataFrame:
+    """Remove model keys listed in ALIAS_DUPLICATES (column 'model')."""
+    return df[~df["model"].isin(ALIAS_DUPLICATES)].copy()
+
+
+def load_runs_long(path: Path | None = None, tag: str | None = "main") -> pd.DataFrame:
+    df = drop_aliases(pd.read_csv(path or DATA_DIR / "runs_long.csv"))
+    return df if tag is None else df[df["tag"] == tag].copy()
 
 
 def runs_array(df_model: pd.DataFrame) -> np.ndarray:
@@ -174,6 +196,11 @@ def agreement_metrics(H: np.ndarray, G: np.ndarray, rsa_metrics=("correlation", 
     out["nRMSE_sd"] = out["RMSE"] / sd
     out["BA_loa_lo"] = out["BA_bias"] - 1.96 * out["BA_sd"]
     out["BA_loa_hi"] = out["BA_bias"] + 1.96 * out["BA_sd"]
+    # Image-specific agreement: remove each rater's own item means (over images)
+    # so that item-level base rates (e.g. NA items are rare) cannot carry the
+    # correlation. This is the part of agreement that requires seeing the image.
+    hc, gc = (H - H.mean(0)).ravel(), (G - G.mean(0)).ravel()
+    out["r_within_item"] = float(np.corrcoef(hc, gc)[0, 1])
     for m in rsa_metrics:
         out[f"RSA_{m}"] = rsa(H, G, m)
     # subscale (PA / NA) level: 10 images each
@@ -182,6 +209,12 @@ def agreement_metrics(H: np.ndarray, G: np.ndarray, rsa_metrics=("correlation", 
         out[f"{name}_bias"] = float((hs - gs).mean())
         out[f"{name}_spearman"] = float(stats.spearmanr(hs, gs)[0])
     return out
+
+
+def item_mean_baseline(H: np.ndarray) -> np.ndarray:
+    """No-image 'model': every image gets the human item means over images.
+    Its agreement is the floor any model must beat to show image sensitivity."""
+    return np.broadcast_to(H.mean(0), H.shape).copy()
 
 
 def bland_altman_checks(h: np.ndarray, g: np.ndarray) -> dict:

@@ -89,7 +89,7 @@ RES_DIR.mkdir(parents=True, exist_ok=True)
 # Ordered as they appear in column headers
 HEBREW_ITEM_MAP = {
     "להתעניין"    : "interested",
-    "לחוץ"        : "nervous",
+    "לחוץ"        : "distressed",
     "נרגש"        : "excited",
     "מוטרד"       : "upset",
     "חזק"         : "strong",
@@ -102,10 +102,10 @@ HEBREW_ITEM_MAP = {
     "עירני"       : "alert",
     "מבוייש"      : "ashamed",
     "שראה"        : "inspired",      # בעל/ת שראה → "inspired"
-    "עצבני"       : "jittery",
+    "עצבני"       : "nervous",
     "נחוש"        : "determined",
     "קשוב"        : "attentive",
-    "מתח"         : "distressed",
+    "מתח"         : "jittery",
     "פעיל"        : "active",
     "פחד"         : "afraid",        # extra item (not in GPT)
 }

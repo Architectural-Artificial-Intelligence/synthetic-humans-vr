@@ -175,7 +175,7 @@ def main():
     A = L.impute_cell_mean(L.human_array(L.load_human_raw()[0]))
     H = np.nanmean(A, 0)
 
-    allruns = pd.read_csv(args.runs_long)
+    allruns = L.drop_aliases(pd.read_csv(args.runs_long))
     rows, conv_all, t0_rows = [], [], []
     for (model, tag), g in allruns.groupby(["model", "tag"]):
         if g["image"].nunique() < L.N_IMAGES:

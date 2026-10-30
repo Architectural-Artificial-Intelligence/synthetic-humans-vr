@@ -36,7 +36,10 @@ import panas_lib as L
 SEED = 2026
 KEY_METRICS = ["ICC2_1", "ICC2_k", "pearson", "spearman", "MAE", "RMSE",
                "nMAE_range", "nRMSE_range", "nMAE_sd", "nRMSE_sd", "BA_bias",
-               "RSA_correlation", "RSA_euclidean", "RSA_cosine"]
+               "r_within_item", "RSA_correlation", "RSA_euclidean", "RSA_cosine"]
+# metrics that are meaningful when IMAGES are resampled (RSA is not: duplicated
+# images create zero distances in both RDMs; use leave-one-image-out instead)
+IMG_METRICS = [m for m in KEY_METRICS if not m.startswith("RSA")]
 
 
 def human_cells(arr):                       # (P,10,20) -> (10,20) cell means
@@ -120,17 +123,21 @@ def bootstrap_metrics(A, runs, B, rng, human_sd):
     pidx = rng.integers(0, P, (B, P))
     H_b = np.stack([np.nanmean(A[i], axis=0) for i in pidx])       # (B,10,20)
     H0 = human_cells(A)
+    iidx = rng.integers(0, L.N_IMAGES, (B, L.N_IMAGES))             # image bootstrap
     results, icc_rep = {}, {}
     for model, R in runs.items():
         G0 = R.mean(0)
         point = L.agreement_metrics(H0, G0, human_sd=human_sd)
+        img = pd.DataFrame([L.agreement_metrics(H0[i], G0[i], rsa_metrics=(), human_sd=human_sd)
+                            for i in iidx])
         ridx = rng.integers(0, R.shape[0], (B, R.shape[0]))
         reps = {"part": [], "both": []}
         for b in range(B):
             reps["part"].append(L.agreement_metrics(H_b[b], G0, human_sd=human_sd))
             Gb = R[ridx[b]].mean(0) if R.shape[0] > 1 else G0
             reps["both"].append(L.agreement_metrics(H_b[b], Gb, human_sd=human_sd))
-        entry = {"point": point}
+        entry = {"point": point,
+                 "img": {m: np.nanpercentile(img[m], [2.5, 97.5]).tolist() for m in IMG_METRICS}}
         for kind in ("part", "both"):
             df = pd.DataFrame(reps[kind])
             entry[kind] = {m: np.nanpercentile(df[m], [2.5, 97.5]).tolist()
@@ -316,6 +323,7 @@ def main():
         for m in KEY_METRICS:
             row[f"{m}_part_lo"], row[f"{m}_part_hi"] = e["part"][m]
             row[f"{m}_both_lo"], row[f"{m}_both_hi"] = e["both"][m]
+            row[f"{m}_img_lo"], row[f"{m}_img_hi"] = e["img"].get(m, [np.nan, np.nan])
         rows.append(row)
     table = pd.DataFrame(rows)
 
@@ -351,7 +359,18 @@ def main():
     bias.to_csv(out / "bias_tests.csv", index=False)
     slopes.to_csv(out / "individual_level_slopes.csv", index=False)
 
+    base = L.item_mean_baseline(H0)
+    base_pt = L.agreement_metrics(H0, base, rsa_metrics=(), human_sd=human_sd)
+    iidx = rng.integers(0, L.N_IMAGES, (args.B, L.N_IMAGES))
+    base_img = pd.DataFrame([L.agreement_metrics(H0[i], L.item_mean_baseline(H0[i]), rsa_metrics=(),
+                                                 human_sd=human_sd) for i in iidx])
+    baseline = {"description": "no-image model: each image gets the human item means over images",
+                **{m: base_pt[m] for m in ("ICC2_1", "ICC2_k", "pearson", "spearman", "MAE", "RMSE")},
+                "ICC2_1_img_ci": np.nanpercentile(base_img["ICC2_1"], [2.5, 97.5]).tolist(),
+                "n_models_ICC2_1_above_baseline": int((table["ICC2_1"] > base_pt["ICC2_1"]).sum()),
+                "n_models": int(len(table))}
     summary = {
+        "item_mean_baseline": baseline,
         "loo_image_ranking_kendall_tau": {"values": [float(t) for t in taus],
                                           "min": float(np.min(taus)), "mean": float(np.mean(taus))},
         "noise_ceiling": noise_ceiling(A, runs, rng),
