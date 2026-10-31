@@ -1,0 +1,23 @@
+# ── Core data / numerics ──────────────────────────────────────────────────
+numpy
+pandas
+scipy
+scikit-learn
+
+# ── Statistics & psychometrics ────────────────────────────────────────────
+statsmodels
+pingouin
+semopy
+
+# ── Visualisation ─────────────────────────────────────────────────────────
+matplotlib
+seaborn
+
+# ── VLM providers (install only what you need) ────────────────────────────
+openai>=1.0           # OpenAI GPT-4 / GPT-5 / o-series
+anthropic>=1.0        # Claude models
+google-genai             # Gemini models (new SDK)
+Pillow                # image loading for Google provider
+pytest
+jinja2
+tabulate
