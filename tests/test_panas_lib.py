@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import pingouin as pg
+import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "analysis"))
 import panas_lib as L
@@ -31,6 +32,8 @@ def test_perfect_and_offset():
     assert m2["pearson"] > 0.999 and m2["ICC2_1"] < m["ICC2_1"]
 
 
+@pytest.mark.skipif(not (Path(__file__).resolve().parent.parent / "data" / "human.csv").exists(),
+                    reason="raw human data (data/human.csv) is not public")
 def test_human_array_complete():
     df, acc = L.load_human_raw()
     A = L.human_array(df)

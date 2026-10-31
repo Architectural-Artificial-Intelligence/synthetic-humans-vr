@@ -8,6 +8,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import vlm_prompt as vp
 
 GOOD = {i: 3.0 for i in vp.PANAS_ITEMS}
+needs_photos = pytest.mark.skipif(not list(vp.PHOTOS_DIR.glob("*.jpg")),
+                                  reason="photos/ not included in this copy")
 
 
 def test_parse_fenced_and_trailing_comma():
@@ -51,6 +53,7 @@ def _fake_registry(monkeypatch, tmp_path, responder):
     vp._dropped_params.clear()
 
 
+@needs_photos
 def test_collect_resume_and_fallback(monkeypatch, tmp_path):
     calls = {"n": 0}
 
@@ -79,6 +82,7 @@ def test_collect_resume_and_fallback(monkeypatch, tmp_path):
     assert len(vp.read_log(vp.run_file("fake", "main"))) == before
 
 
+@needs_photos
 def test_build(monkeypatch, tmp_path):
     def responder(spec, path, prompt, opts):
         return dict(text=json.dumps(GOOD), returned_model="m", finish_reason="stop",
