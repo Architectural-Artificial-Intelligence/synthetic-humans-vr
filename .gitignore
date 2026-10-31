@@ -32,7 +32,3 @@ build/
 .env.local
 
 *.key
-# Not shared
-photos/
-data/human.csv
-human1.csv

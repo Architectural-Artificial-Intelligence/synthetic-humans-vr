@@ -2,7 +2,7 @@
 
 Source code and results for the study comparing 43 vision language models (VLMs) with the PANAS affect that 84 participants reported while viewing ten urban environments in immersive VR.
 
-This branch holds only the latest code (VLM querying and statistical analysis) and the final results. The panoramas and the raw participant responses are not included (see [Data not included](#data-not-included)).
+This branch holds the latest code (VLM querying and statistical analysis), the inputs it needs (the ten panoramas and the de-identified participant responses) and the final results.
 
 ## Contents
 
@@ -16,6 +16,8 @@ This branch holds only the latest code (VLM querying and statistical analysis) a
 | `analysis/stability.py` | Run-to-run stability, convergence over runs, temperature-0 control |
 | `analysis/paired_baseline.py` | Paired image bootstrap of each model against the no-image baseline |
 | `tests/` | Unit tests (`pytest`) |
+| `photos/1.jpg` … `photos/10.jpg` | The ten 360° panoramas (equirectangular, 3584 × 1792 px) shown in VR and sent to the models; GPS location data removed |
+| `data/human.csv` | De-identified responses of the 84 participants: 20 PANAS items × 10 environments, in Hebrew (see below) |
 | `data/runs/*.jsonl` | Every VLM call: raw response, parsed scores, returned model version, temperature, seed, tokens, timestamp (`__t0` = temperature-0 control) |
 | `data/runs/model_config.json`, `data/runs/prompt.txt` | Per-model settings and the prompt snapshot (its SHA-256 is stored in every call) |
 | `data/runs_long.csv` | All valid ratings: model, condition, image, run, item, score (98,000 rows) |
@@ -51,14 +53,14 @@ python -m pytest tests            # data-dependent tests skip when inputs are ab
 # rebuild the run-level table from the call logs (reproduces data/runs_long.csv exactly)
 python vlm_prompt.py --build
 
-# analysis (requires data/human.csv, see below)
+# analysis
 cd analysis
 python stability.py        --out ../results/<batch>/stability
 python robust_inference.py --B 2000 --mixed --out ../results/<batch>/summary
 python paired_baseline.py  --B 2000 --out ../results/<batch>/summary
 ```
 
-New collection requires the ten panoramas in `photos/` (`1.jpg` … `10.jpg`) and API keys in the environment or a `.env` file (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`, `DEEPINFRA_API_KEY`):
+New collection requires API keys in the environment or a `.env` file (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`, `DEEPINFRA_API_KEY`):
 
 ```bash
 python vlm_prompt.py --check-auth
@@ -67,7 +69,8 @@ python vlm_prompt.py --verify
 python vlm_prompt.py --build
 ```
 
-## Data not included
+## Panoramas and participant data
 
-- **Panoramas** (`photos/`): available from the authors on request; they will be released with location metadata removed.
-- **Individual participant responses** (`data/human.csv`): not public. The aggregate cell means are in `results/20261030_v2/human_cell_means.csv`. The individual-level responses, which the bootstrap and participant-level analyses require, are available from the corresponding author on reasonable request.
+- **Panoramas.** The GPS block was removed from each file's metadata without re-encoding, so the pixels are identical to the images the models received. Because the metadata changed, file hashes differ from the `image_sha256` recorded in the call logs; the capture date and camera model are kept.
+- **Participant responses (`data/human.csv`).** One row per participant, exported from the response form. The PANAS responses (columns 7 onward, Hebrew labels, mapped to 1–5 by `analysis/panas_lib.py`) are exactly as recorded. To reduce identifiability, the submission timestamp was replaced by a participant ID (`P01`–`P84`, in the original order), birth year by an age band, and free-text occupation by *architecture*, *other* or *not reported*. Gender and education are as reported. All participants gave consent; there are no missing PANAS responses.
+- Exact demographics reported in the paper (mean age 26.7, SD 7.2) were computed from the original file and cannot be recomputed from the age bands.
