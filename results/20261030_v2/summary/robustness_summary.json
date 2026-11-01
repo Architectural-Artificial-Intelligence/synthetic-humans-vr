@@ -1,0 +1,242 @@
+{
+  "item_mean_baseline": {
+    "description": "no-image model: each image gets the human item means over images",
+    "ICC2_1": 0.5655297418561108,
+    "ICC2_k": 0.7224771612267321,
+    "pearson": 0.626934193848155,
+    "spearman": 0.6022548885861061,
+    "MAE": 0.5369642857142857,
+    "RMSE": 0.6444505165285914,
+    "ICC2_1_img_ci": [
+      0.47893596563930213,
+      0.8436917244354913
+    ],
+    "n_models_ICC2_1_above_baseline": 40,
+    "n_models": 43
+  },
+  "loo_image_ranking_kendall_tau": {
+    "values": [
+      0.9401993355481727,
+      0.9756367663344406,
+      0.9335548172757475,
+      0.964562569213732,
+      0.8781838316722037,
+      0.9401993355481727,
+      0.8405315614617939,
+      0.9623477297895902,
+      0.8826135105204872,
+      0.875968992248062
+    ],
+    "min": 0.8405315614617939,
+    "mean": 0.9193798449612401
+  },
+  "noise_ceiling": {
+    "individual_vs_others_mean_r": 0.6556277842811221,
+    "individual_vs_all_mean_r": 0.6654455448289137,
+    "split_half_spearman_brown_mean": 0.9847886451127156,
+    "split_half_spearman_brown_ci": [
+      0.9785916064634341,
+      0.9891982668226514
+    ],
+    "models": {
+      "claude-haiku-4-5": {
+        "model_vs_individual_r_mean": 0.5362460326463501,
+        "prop_participants_below_model": 0.15476190476190477
+      },
+      "claude-haiku-5-5": {
+        "model_vs_individual_r_mean": 0.5189685089280276,
+        "prop_participants_below_model": 0.14285714285714285
+      },
+      "claude-opus-4-6": {
+        "model_vs_individual_r_mean": 0.582750958954149,
+        "prop_participants_below_model": 0.17857142857142858
+      },
+      "claude-opus-5-5": {
+        "model_vs_individual_r_mean": 0.5594736701158728,
+        "prop_participants_below_model": 0.19047619047619047
+      },
+      "claude-sonnet-4-6": {
+        "model_vs_individual_r_mean": 0.5709910597929808,
+        "prop_participants_below_model": 0.16666666666666666
+      },
+      "claude-sonnet-5-5": {
+        "model_vs_individual_r_mean": 0.5199404624818269,
+        "prop_participants_below_model": 0.13095238095238096
+      },
+      "deepseek-v4.1-flash": {
+        "model_vs_individual_r_mean": 0.5579481373558615,
+        "prop_participants_below_model": 0.08333333333333333
+      },
+      "gemini-2.5-flash": {
+        "model_vs_individual_r_mean": 0.4663003188059979,
+        "prop_participants_below_model": 0.03571428571428571
+      },
+      "gemini-2.5-pro": {
+        "model_vs_individual_r_mean": 0.5326546289609566,
+        "prop_participants_below_model": 0.047619047619047616
+      },
+      "gemini-3.1-flash-lite": {
+        "model_vs_individual_r_mean": 0.5894813972857902,
+        "prop_participants_below_model": 0.14285714285714285
+      },
+      "gemini-3.1-pro": {
+        "model_vs_individual_r_mean": 0.5777668485574294,
+        "prop_participants_below_model": 0.08333333333333333
+      },
+      "gemini-3.5-flash-lite": {
+        "model_vs_individual_r_mean": 0.5639398524264138,
+        "prop_participants_below_model": 0.08333333333333333
+      },
+      "gemini-3.6-flash": {
+        "model_vs_individual_r_mean": 0.5788980958542255,
+        "prop_participants_below_model": 0.19047619047619047
+      },
+      "gemini-3.8-flash": {
+        "model_vs_individual_r_mean": 0.5902342251200764,
+        "prop_participants_below_model": 0.2261904761904762
+      },
+      "gemini-4-argon": {
+        "model_vs_individual_r_mean": 0.5915677328296334,
+        "prop_participants_below_model": 0.17857142857142858
+      },
+      "gemma-4-26b-a4b": {
+        "model_vs_individual_r_mean": 0.5781124558974052,
+        "prop_participants_below_model": 0.11904761904761904
+      },
+      "gemma-4-31b": {
+        "model_vs_individual_r_mean": 0.5743552698243691,
+        "prop_participants_below_model": 0.05952380952380952
+      },
+      "glm-5.3-flash": {
+        "model_vs_individual_r_mean": 0.5558077510996147,
+        "prop_participants_below_model": 0.21428571428571427
+      },
+      "gpt-4.1": {
+        "model_vs_individual_r_mean": 0.5433008838204773,
+        "prop_participants_below_model": 0.17857142857142858
+      },
+      "gpt-4.1-mini": {
+        "model_vs_individual_r_mean": 0.5654120434235167,
+        "prop_participants_below_model": 0.20238095238095238
+      },
+      "gpt-4.1-nano": {
+        "model_vs_individual_r_mean": 0.4875751896610584,
+        "prop_participants_below_model": 0.047619047619047616
+      },
+      "gpt-5.2": {
+        "model_vs_individual_r_mean": 0.5548321573209998,
+        "prop_participants_below_model": 0.14285714285714285
+      },
+      "gpt-5.4": {
+        "model_vs_individual_r_mean": 0.5737487068676528,
+        "prop_participants_below_model": 0.16666666666666666
+      },
+      "gpt-5.4-mini": {
+        "model_vs_individual_r_mean": 0.5456937132405528,
+        "prop_participants_below_model": 0.16666666666666666
+      },
+      "gpt-5.4-nano": {
+        "model_vs_individual_r_mean": 0.4703569097378671,
+        "prop_participants_below_model": 0.07142857142857142
+      },
+      "gpt-5.5": {
+        "model_vs_individual_r_mean": 0.55722550514154,
+        "prop_participants_below_model": 0.15476190476190477
+      },
+      "gpt-5.6-luna": {
+        "model_vs_individual_r_mean": 0.48976308168961374,
+        "prop_participants_below_model": 0.08333333333333333
+      },
+      "gpt-5.6-sol": {
+        "model_vs_individual_r_mean": 0.549511949605816,
+        "prop_participants_below_model": 0.15476190476190477
+      },
+      "gpt-5.6-terra": {
+        "model_vs_individual_r_mean": 0.5708749995668345,
+        "prop_participants_below_model": 0.14285714285714285
+      },
+      "gpt-6-astra": {
+        "model_vs_individual_r_mean": 0.5663108308401472,
+        "prop_participants_below_model": 0.20238095238095238
+      },
+      "gpt-6-luna": {
+        "model_vs_individual_r_mean": 0.4937531152517771,
+        "prop_participants_below_model": 0.10714285714285714
+      },
+      "gpt-6-sol": {
+        "model_vs_individual_r_mean": 0.5235413423244546,
+        "prop_participants_below_model": 0.14285714285714285
+      },
+      "gpt-6.1-sol": {
+        "model_vs_individual_r_mean": 0.5603104114185994,
+        "prop_participants_below_model": 0.17857142857142858
+      },
+      "kimi-k2.6": {
+        "model_vs_individual_r_mean": 0.5521081103368547,
+        "prop_participants_below_model": 0.14285714285714285
+      },
+      "kimi-k3": {
+        "model_vs_individual_r_mean": 0.5892832109741288,
+        "prop_participants_below_model": 0.13095238095238096
+      },
+      "llama-4-scout": {
+        "model_vs_individual_r_mean": 0.5633970260957943,
+        "prop_participants_below_model": 0.09523809523809523
+      },
+      "mimo-v2.6-flash": {
+        "model_vs_individual_r_mean": 0.5586065091328564,
+        "prop_participants_below_model": 0.15476190476190477
+      },
+      "mimo-v2.6-pro": {
+        "model_vs_individual_r_mean": 0.5323813347995244,
+        "prop_participants_below_model": 0.14285714285714285
+      },
+      "mistral-small-3.2-24b": {
+        "model_vs_individual_r_mean": 0.5467861441406737,
+        "prop_participants_below_model": 0.19047619047619047
+      },
+      "qwen3-vl-235b": {
+        "model_vs_individual_r_mean": 0.5658893628224984,
+        "prop_participants_below_model": 0.11904761904761904
+      },
+      "qwen3-vl-30b-a3b": {
+        "model_vs_individual_r_mean": 0.5465442520920205,
+        "prop_participants_below_model": 0.19047619047619047
+      },
+      "qwen3.5-397b-a17b": {
+        "model_vs_individual_r_mean": 0.5726574474218827,
+        "prop_participants_below_model": 0.07142857142857142
+      },
+      "qwen3.8-27b": {
+        "model_vs_individual_r_mean": 0.5328948699645053,
+        "prop_participants_below_model": 0.047619047619047616
+      }
+    }
+  },
+  "selection_validation_top5": {
+    "top_k": 5,
+    "n_replicates": 1000,
+    "mean_ICC_selected_on_A": 0.8269926204405488,
+    "mean_ICC_same_models_on_B": 0.8192598588868708,
+    "optimism": 0.007732761553677969,
+    "mean_ICC_best_models_on_B": 0.826997856421189,
+    "mean_top_k_overlap": 3.216,
+    "overlap_distribution": [
+      0,
+      0,
+      133,
+      519,
+      347,
+      1
+    ]
+  },
+  "settings": {
+    "B": 2000,
+    "seed": 2026,
+    "tag": "main",
+    "legacy": false,
+    "human_sd_used_for_nMAE_sd": 1.3218286040227658,
+    "scale_range": 4.0,
+    "ICC": "ICC(2,1) single / ICC(2,k=2) average; two-way random, absolute agreement; targets = 200 image x item cells; raters = human mean, model mean"
+  }
+}
