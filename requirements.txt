@@ -21,3 +21,4 @@ Pillow                # image loading for Google provider
 pytest
 jinja2
 tabulate
+opencv-python-headless<5   # Haar face detection for scene thumbnails

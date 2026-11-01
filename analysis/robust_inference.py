@@ -55,7 +55,7 @@ def load_models(args) -> dict[str, np.ndarray]:
             if not np.isnan(g).any():
                 out[p.stem] = g[None]
         return out
-    df = L.load_runs_long(Path(args.runs_long) if args.runs_long else None, tag=args.tag)
+    df = L.drop_excluded(L.load_runs_long(Path(args.runs_long) if args.runs_long else None, tag=args.tag))
     for model, g in df.groupby("model"):
         arr = L.runs_array(g)
         if np.isnan(arr).any() or g["image"].nunique() < L.N_IMAGES:

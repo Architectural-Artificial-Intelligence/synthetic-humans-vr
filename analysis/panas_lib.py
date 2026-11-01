@@ -62,6 +62,14 @@ LIKERT_MAP = {"כלל לא": 1, "מעט": 2, "במידה בינונית": 3,
               "במידה רבה": 4, "רבה מאוד": 5}
 SCALE_RANGE = 4.0     # 1..5 Likert -> range used to normalise MAE / RMSE
 
+# Alias duplicates are excluded from every analysis (raw logs are kept).
+EXCLUDED_MODELS = ALIAS_DUPLICATES
+
+
+def drop_excluded(df, col="model"):
+    """Remove the aliased models listed in EXCLUDED_MODELS from a frame."""
+    return df[~df[col].isin(EXCLUDED_MODELS)].copy()
+
 
 # ── Human data ─────────────────────────────────────────────────────────────
 def _keyword(col: str):
