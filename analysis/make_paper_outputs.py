@@ -79,6 +79,8 @@ def table_reproducibility(out: Path, prov):
     cfg = json.loads((L.DATA_DIR / "runs" / "model_config.json").read_text())
     rows = []
     for m, c in cfg.items():
+        if m in L.EXCLUDED_MODELS:
+            continue
         path = L.DATA_DIR / "runs" / f"{m}.jsonl"
         if not path.exists():
             continue
@@ -98,8 +100,10 @@ def table_reproducibility(out: Path, prov):
             "Last call (UTC)": max(r["timestamp"] for r in log)[:10],
         })
     df = pd.DataFrame(rows).sort_values(["Provider", "Model key"])
+    note = "; ".join(f"{k} ({v})" for k, v in L.EXCLUDED_MODELS.items())
     save_table(df, out / "T1_model_reproducibility",
-               "VLM configuration and run accounting (every call logged; seed per call = 1000 x image + call index where supported).")
+               "VLM configuration and run accounting (every call logged; seed per call = 1000 x image + call index where supported). "
+               f"Excluded from all analyses (aliased model names): {note}.")
     return df
 
 
@@ -474,11 +478,11 @@ def main():
     tdir.mkdir(parents=True, exist_ok=True); fdir.mkdir(parents=True, exist_ok=True)
 
     prov = provider_map()
-    comp = pd.read_csv(summ / "model_comparison.csv")
-    bias = pd.read_csv(summ / "bias_tests.csv")
-    stab = pd.read_csv(stabd / "stability_by_model.csv")
-    conv = pd.read_csv(stabd / "convergence_by_k.csv")
-    runs_long = pd.read_csv(L.DATA_DIR / "runs_long.csv")
+    comp = L.drop_excluded(pd.read_csv(summ / "model_comparison.csv"))
+    bias = L.drop_excluded(pd.read_csv(summ / "bias_tests.csv"))
+    stab = L.drop_excluded(pd.read_csv(stabd / "stability_by_model.csv"))
+    conv = L.drop_excluded(pd.read_csv(stabd / "convergence_by_k.csv"))
+    runs_long = L.drop_excluded(pd.read_csv(L.DATA_DIR / "runs_long.csv"))
     A = L.impute_cell_mean(L.human_array(L.load_human_raw()[0]))
     H = A.mean(0)
 

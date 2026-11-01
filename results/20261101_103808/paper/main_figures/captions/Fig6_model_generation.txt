@@ -1,0 +1,6 @@
+Figure 6. Newer is not more accurate.
+Each line connects an older and a newer version of the same model family: Claude Sonnet 4.6 to 5.5, Claude Opus 4.6 to 5.5, Claude Haiku 4.5 to 5.5, GPT 5.4 to GPT-6 Sol, Gemini 2.5 Pro to Gemini 4 Argon, and Kimi K2.6 to K3. y = ICC(2,1) with human cell means; colour and marker = provider. Shaded bands are the tiers (low < .70, mid .70-.80, top >= .80). GPT-4.1 mini (open marker) has no paired successor in the model set.
+Four of the six families get worse (Sonnet 0.79 to 0.65, Opus 0.83 to 0.74, Haiku 0.80 to 0.71, GPT 0.84 to 0.69) and two improve (Gemini Pro 0.74 to 0.87, Kimi 0.69 to 0.83). Version changes within a family are as large as the spread between providers. Differences of this size should be read against the intervals in Figure 5, which are wide at the level of single models; the pattern across families, not any one pair, is the finding.
+Note: GPT-6 Sol is used as the successor of GPT 5.4; GPT-6.1 Sol (ICC 0.82) is also in the model set.
+
+Units and conventions. Units throughout: 200 image x item cells (10 environments x 20 PANAS items); N = 84 participants; 10 independent runs per model and image; 43 models (two aliased Gemini models excluded). ICC = ICC(2,1), two-way random, absolute agreement, between the human cell means and the model cell means. Tiers: low < .70, mid .70-.80, top >= .80.

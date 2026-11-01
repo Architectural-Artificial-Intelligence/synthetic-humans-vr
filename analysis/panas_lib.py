@@ -43,7 +43,19 @@ HEBREW_ITEM_MAP = {
 }
 LIKERT_MAP = {"כלל לא": 1, "מעט": 2, "במידה בינונית": 3,
               "במידה רבה": 4, "רבה מאוד": 5}
-SCALE_RANGE = 4.0     # 1..5 Likert -> range used to normalise MAE / RMSE
+SCALE_RANGE = 4.0
+
+# Models queried but excluded from every analysis: the API returned the name of
+# a different model and the outputs are identical to it (raw logs are kept).
+EXCLUDED_MODELS = {
+    "gemini-3.5-flash": "API returned 'gemini-3.6-flash'; outputs identical to gemini-3.6-flash",
+    "gemini-3.7-flash": "API returned 'gemini-3.8-flash'; outputs ~identical to gemini-3.8-flash",
+}
+
+
+def drop_excluded(df, col="model"):
+    """Remove the aliased models listed in EXCLUDED_MODELS from a frame."""
+    return df[~df[col].isin(EXCLUDED_MODELS)].copy()     # 1..5 Likert -> range used to normalise MAE / RMSE
 
 
 # ── Human data ─────────────────────────────────────────────────────────────

@@ -1,0 +1,11 @@
+scene,short_name,yaw,pitch,fov,auto_detect,blur_boxes
+1,Street kiosk,-4,-2,100,no,"455,265,500,305;748,278,790,320;132,284,182,336"
+2,Palm plaza,62,6,100,yes,"198,248,236,282;660,232,712,270"
+3,Overgrown yard,5,0,100,yes,
+4,Parked street,-54,0,100,yes,"292,322,355,346;462,318,508,342;718,322,792,350;835,308,900,338"
+5,Arcade,18,0,100,yes,"362,296,396,350"
+6,Tree path,0,0,100,yes,"730,296,795,352"
+7,Beach,-18,6,100,yes,
+8,Cafe,36,0,90,no,"420,265,490,345"
+9,Service car park,-29,0,100,yes,"140,515,212,575"
+10,Parking hall,0,-3,100,yes,
