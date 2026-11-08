@@ -1,0 +1,15 @@
+{
+  "sensitivity": {
+    "min_d_power80": 0.6505813513164231,
+    "min_d_power90": 0.7527563624188881
+  },
+  "cells": {
+    "cells_p05_uncorrected": 32,
+    "cells_expected_by_chance": 10.0,
+    "cells_sig_fdr": 9
+  },
+  "B": 2000,
+  "perm": 5000,
+  "seed": 2026,
+  "n_models": 43
+}
