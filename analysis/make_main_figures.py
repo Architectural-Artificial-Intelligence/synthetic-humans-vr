@@ -135,17 +135,13 @@ def fig4(out: Path, isum: pd.DataFrame):
         for i, r in d.iterrows():
             ax.plot([r["min"], r["max"]], [i, i], color=col, lw=1, alpha=.45, zorder=2)
             ax.plot([r["q25"], r["q75"]], [i, i], color=col, lw=5, alpha=.55, solid_capstyle="butt", zorder=3)
-            if r["adapted"]:
-                ax.plot(r["median"], i, "D", color="white", mec=INK, mew=1.4, ms=6.5, zorder=5)
-            else:
-                ax.plot(r["median"], i, "o", color=INK, ms=4.5, zorder=5)
+            ax.plot(r["median"], i, "o", color=INK, ms=4.5, zorder=5)
         ax.axvline(0, color=INK, lw=1)
         ax.set_yticks(range(len(d)), d["item"], fontsize=8)
         ax.set_title("Positive-affect items" if sub == "PA" else "Negative-affect items", fontsize=9)
         ax.grid(axis="y", visible=False)
     axes[1].set_xlabel("Signed error, model - human (rating points; below 0 = model rates lower)")
     h = [plt.Line2D([], [], marker="o", ls="", color=INK, label="median across models", markersize=5),
-         plt.Line2D([], [], marker="D", ls="", mfc="white", mec=INK, mew=1.3, label="adapted Hebrew item", markersize=6),
          plt.Line2D([], [], color=GRAY, lw=5, alpha=.6, label="IQR"),
          plt.Line2D([], [], color=GRAY, lw=1, label="min-max")]
     axes[0].legend(handles=h, loc="upper left", fontsize=7)
