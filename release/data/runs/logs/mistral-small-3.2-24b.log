@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== mistral-small-3.2-24b (mistralai/Mistral-Small-3.2-24B-Instruct-2506) T=0.7 ===
+  mistral-small-3.2-24b [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   mistral-small-3.2-24b      lines= 100 status={'ok': 100} distinct/img(min)=10 T=['0.7'] model=['mistralai/Mistral-Small-3.2-24B-Instruct-2506']

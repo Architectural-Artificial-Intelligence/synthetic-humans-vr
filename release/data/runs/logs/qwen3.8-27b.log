@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== qwen3.8-27b (Qwen/Qwen3.8-27B) T=0.7 ===
+  qwen3.8-27b [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   qwen3.8-27b                lines= 100 status={'ok': 100} distinct/img(min)=10 T=['0.7'] model=['Qwen/Qwen3.8-27B']

@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== llama-4-scout (meta-llama/Llama-4-Scout-17B-16E-Instruct) T=0.7 ===
+  llama-4-scout [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   llama-4-scout              lines= 100 status={'ok': 100} distinct/img(min)=8 T=['0.7'] model=['meta-llama/Llama-4-Scout-17B-16E-Instruct']

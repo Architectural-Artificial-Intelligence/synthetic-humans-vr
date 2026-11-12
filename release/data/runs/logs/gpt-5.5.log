@@ -1,0 +1,3 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== gpt-5.5 (gpt-5.5) T=0.7 ===
+  gpt-5.5 [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]

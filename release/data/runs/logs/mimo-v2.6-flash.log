@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== mimo-v2.6-flash (XiaomiMiMo/MiMo-V2.6-Flash) T=0.7 ===
+  mimo-v2.6-flash [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   mimo-v2.6-flash            lines= 100 status={'ok': 100} distinct/img(min)=10 T=['0.7'] model=['XiaomiMiMo/MiMo-V2.6-Flash']

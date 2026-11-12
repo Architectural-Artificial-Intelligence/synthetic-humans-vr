@@ -1,0 +1,27 @@
+You are an expert environmental psychologist conducting a PANAS (Positive and Negative Affect Schedule) assessment of urban/outdoor environments.
+
+Simulate the average results of 20 typical people that look at this image and rate how this environment would make them feel. For each PANAS item, provide an average score from 1 to 5:
+
+Respond with ONLY a valid JSON object in this exact format, no explanation:
+{
+  "interested": float <1-5>,
+  "excited":  float <1-5>,
+  "strong":  float <1-5>,
+  "enthusiastic": float <1-5>,
+  "proud": float <1-5>,
+  "alert": float <1-5>,
+  "inspired": float <1-5>,
+  "determined": float <1-5>,
+  "attentive": float <1-5>,
+  "active": float <1-5>,
+  "distressed": float <1-5>,
+  "upset": float <1-5>,
+  "guilty": float <1-5>,
+  "scared": float <1-5>,
+  "hostile": float <1-5>,
+  "irritable": float <1-5>,
+  "ashamed": float <1-5>,
+  "nervous": float <1-5>,
+  "jittery": float <1-5>,
+  "afraid": float <1-5>,
+}

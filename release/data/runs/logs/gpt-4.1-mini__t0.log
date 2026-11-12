@@ -1,0 +1,3 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: t0
+=== gpt-4.1-mini (gpt-4.1-mini) T=0.0 ===
+  gpt-4.1-mini [t0]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]

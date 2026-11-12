@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== gemma-4-31b (google/gemma-4-31B-it) T=0.7 ===
+  gemma-4-31b [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   gemma-4-31b                lines= 100 status={'ok': 100} distinct/img(min)=9 T=['0.7'] model=['google/gemma-4-31B-it']

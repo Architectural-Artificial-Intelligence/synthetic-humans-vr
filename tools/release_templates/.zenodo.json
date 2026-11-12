@@ -1,0 +1,16 @@
+{
+  "title": "Human and VLM PANAS ratings of ten immersive urban environments (data and code)",
+  "upload_type": "dataset",
+  "version": "1.0.0",
+  "description": "<p>Human PANAS ratings (84 participants, ten 360&deg; urban scenes viewed in VR, de-identified) and repeated PANAS ratings from 45 vision-language models (raw API logs, run-level ratings), the prompt, blurred and metadata-free panoramas, and the full analysis code and results (final batch 20261101_103808) supporting the paper &ldquo;Human and VLM PANAS ratings of ten immersive urban environments&rdquo;.</p>",
+  "creators": [
+    {"name": "Dortheimer, Jonathan", "affiliation": "TODO"}
+  ],
+  "license": "cc-by-4.0",
+  "keywords": ["PANAS", "vision-language models", "virtual reality", "urban environments", "affect", "360-degree images"],
+  "access_right": "open",
+  "language": "eng",
+  "related_identifiers": [
+    {"identifier": "https://github.com/Architectural-Artificial-Intelligence/synthetic-humans-vr", "relation": "isSupplementTo", "scheme": "url"}
+  ]
+}

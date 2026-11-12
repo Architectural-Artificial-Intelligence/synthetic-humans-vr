@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== qwen3-vl-235b (Qwen/Qwen3-VL-235B-A22B-Instruct) T=0.7 ===
+  qwen3-vl-235b [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   qwen3-vl-235b              lines= 100 status={'ok': 100} distinct/img(min)=8 T=['0.7'] model=['Qwen/Qwen3-VL-235B-A22B-Instruct']

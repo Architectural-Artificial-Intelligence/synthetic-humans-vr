@@ -1,0 +1,12 @@
+# SHA-256 of the ORIGINAL (unblurred, with metadata) panoramas shown to the VLMs;
+# the same hashes are logged per call in data/runs/*.jsonl.
+1.jpg  original_sha256=a989a12f91dae8c12d5d3b240e5b974774795449d7100b08cffe4e398be35b65
+2.jpg  original_sha256=4aa7c6665903d4f19e0e5906c6668290306fc4c1616fa6236227ea84a93e3073
+3.jpg  original_sha256=694bf6c6a5555ff5b3089787ac201464ec3323a949d66025a503919163005292
+4.jpg  original_sha256=5bc20568f0bde2b0f076d2a765ad3ce4380d44acdad83cbcab3a6aa01630bec1
+5.jpg  original_sha256=6042a8dd42d54940fba3704c6bc40dcbb0636a11b83a1b2145ea29d56bb7351c
+6.jpg  original_sha256=2a753c282338c8a767dc251d99b2c506368e98bed9b3e306c3a841c1988030f5
+7.jpg  original_sha256=838fb7da26e17f3528088b635bcf08ae1a6ac880c0ff29a905eb22c66bf86b24
+8.jpg  original_sha256=4ba1bd471593adf5924a8fecbfa04cb1d569feacfefeb7ac3cda6ab15164a179
+9.jpg  original_sha256=e74bd6d63fa0b610d36f748c9e48ce8251bb63401a0542bec254e7b6387f0360
+10.jpg  original_sha256=77cbfea3e55b21e8b21c2475d149d289c085a0df3acc3890e8d2930d1ab76bc7

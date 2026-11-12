@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== kimi-k3 (moonshotai/Kimi-K3) T=0.7 ===
+  kimi-k3 [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   kimi-k3                    lines= 100 status={'ok': 100} distinct/img(min)=10 T=['0.7'] model=['moonshotai/Kimi-K3']

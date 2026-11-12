@@ -1,0 +1,3 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: t0
+=== llama-4-scout (meta-llama/Llama-4-Scout-17B-16E-Instruct) T=0.0 ===
+  llama-4-scout [t0]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]

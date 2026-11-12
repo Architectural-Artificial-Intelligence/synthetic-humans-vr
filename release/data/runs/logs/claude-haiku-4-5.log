@@ -1,0 +1,4 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== claude-haiku-4-5 (claude-haiku-4-5-20251001) T=0.7 ===
+  claude-haiku-4-5 [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   claude-haiku-4-5           lines= 100 status={'ok': 100} distinct/img(min)=8 T=['0.7'] model=['claude-haiku-4-5-20251001']

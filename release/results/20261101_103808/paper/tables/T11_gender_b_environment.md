@@ -1,0 +1,16 @@
+**Table S11b | Women vs men by environment.**
+
+| #   | Environment      | PA women   | PA men   | PA g   | PA p (FDR)   | NA women   | NA men   | NA g   | NA p (FDR)   |
+|:----|:-----------------|:-----------|:---------|:-------|:-------------|:-----------|:---------|:-------|:-------------|
+| 1   | Street kiosk     | 3.13       | 3.12     | +0.01  | .978         | 1.61       | 1.49     | +0.18  | .503         |
+| 2   | Palm plaza       | 2.67       | 2.82     | -0.20  | .718         | 1.73       | 1.57     | +0.23  | .503         |
+| 3   | Overgrown yard   | 2.20       | 2.20     | -0.01  | .978         | 2.75       | 2.43     | +0.41  | .176         |
+| 4   | Parked street    | 2.45       | 2.31     | +0.22  | .718         | 1.60       | 1.47     | +0.20  | .503         |
+| 5   | Arcade           | 2.17       | 2.28     | -0.17  | .718         | 2.72       | 2.41     | +0.41  | .176         |
+| 6   | Tree path        | 3.08       | 3.19     | -0.14  | .743         | 1.37       | 1.33     | +0.06  | .902         |
+| 7   | Beach            | 3.64       | 3.44     | +0.25  | .718         | 1.33       | 1.31     | +0.05  | .902         |
+| 8   | Cafe             | 2.77       | 2.90     | -0.19  | .718         | 1.30       | 1.30     | +0.01  | .968         |
+| 9   | Service car park | 2.06       | 2.04     | +0.04  | .978         | 3.31       | 2.60     | +0.87  | .002         |
+| 10  | Parking hall     | 2.31       | 2.20     | +0.21  | .718         | 2.74       | 2.21     | +0.65  | .012         |
+
+*Environment-level subscale means; g = Hedges g (women − men); Welch tests with Benjamini–Hochberg FDR within subscale. Gender × environment (mixed ANOVA, Greenhouse–Geisser): PA F(9, 738) = 1.00, p = .425; NA F(9, 738) = 3.71, p = .001.*

@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this dataset or code, please cite it and the associated paper."
+title: "Human and VLM PANAS ratings of ten immersive urban environments (data and code)"
+version: "1.0.0"
+date-released: "2026-11-12"
+license: [CC-BY-4.0, MIT]
+authors:
+  - family-names: Dortheimer
+    given-names: Jonathan
+    # orcid: "https://orcid.org/TODO"
+    # TODO: add remaining authors in paper order (e.g. Glassman? Ben-David, Brama)
+repository-code: "https://github.com/Architectural-Artificial-Intelligence/synthetic-humans-vr"
+# doi: TODO (Zenodo DOI after publishing)
+keywords: [PANAS, vision-language models, virtual reality, urban environments, affect, 360-degree images]

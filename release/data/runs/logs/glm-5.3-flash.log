@@ -1,0 +1,38 @@
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== glm-5.3-flash (zai-org/GLM-5.3-Flash) T=0.7 ===
+    [error] glm-5.3-flash img3 call2: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img2 call6: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img3 call6: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img3 call7: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img2 call8: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img3 call9: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img2 call9: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img5 call1: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img3 call11: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img6 call1: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img3 call14: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img5 call6: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+  [short] glm-5.3-flash img3: 9/10 valid runs
+    [error] glm-5.3-flash img8 call2: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img6 call5: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img6 call6: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img7 call5: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img8 call5: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img5 call12: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img7 call7: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img6 call9: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img5 call13: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img7 call8: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img8 call7: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img6 call10: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img9 call3: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img9 call8: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img9 call11: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+    [error] glm-5.3-flash img10 call9: RateLimitError: Error code: 429 - {'error': {'message': 'Model busy, retry later', 'type': 'invalid_request_error', 'par
+  glm-5.3-flash [main]: valid runs per image = [10, 10, 9, 10, 10, 10, 10, 10, 10, 10]
+FAIL glm-5.3-flash              lines= 127 status={'ok': 99, 'error': 28} distinct/img(min)=10 T=['0.7'] model=['zai-org/GLM-5.3-Flash']
+       image 3: run numbers [1, 2, 3, 4, 5, 6, 7, 8, 9]
+Photos: 10  Models: 1  Runs/image: 10  Tag: main
+=== glm-5.3-flash (zai-org/GLM-5.3-Flash) T=0.7 ===
+  glm-5.3-flash [main]: valid runs per image = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+OK   glm-5.3-flash              lines= 128 status={'ok': 100, 'error': 28} distinct/img(min)=10 T=['0.7'] model=['zai-org/GLM-5.3-Flash']

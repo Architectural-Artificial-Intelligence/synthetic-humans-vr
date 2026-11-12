@@ -1,0 +1,4 @@
+variable,female,male,test
+age (years),"25.6 (6.5), median 24","28.7 (8.2), median 26","Welch t = -1.76, p = 0.084; Mann-Whitney p = 0.002"
+architecture occupation,50/55 (91%),21/29 (72%),"Fisher exact OR = 3.81, p = 0.053"
+current student,25/55 (45%),15/29 (52%),"Fisher exact OR = 0.78, p = 0.649"
